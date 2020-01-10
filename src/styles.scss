@@ -1,0 +1,33 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+    margin: 0;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.d-flex {
+    display: flex;
+}
+
+.h-100 {
+    height: 100vh;
+}
+
+.justify-content-center {
+    justify-content: center;
+}
+
+.text-center {
+    text-align: center;
+}
+
+input, button {    
+    font-family: 'Poppins', sans-serif;
+}
