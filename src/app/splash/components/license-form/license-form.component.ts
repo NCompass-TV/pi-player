@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Content } from '../../../models/content.model';
+import { PlayerService } from '../../../services/player.service';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'app-license-form',
@@ -9,15 +12,24 @@ import { Component, OnInit } from '@angular/core';
 export class LicenseFormComponent implements OnInit {
 
 	license: string;
+	data$: Observable<Content[]>;
 
-	constructor() { }
+	constructor(
+		private player: PlayerService
+	) { 
+	}
 
 	ngOnInit() {
-
 	}
 
 	setupLicense() {
-		console.log(this.license);
+		this.data$ = this.player.getContent();
+		this.data$.subscribe(
+			(data: Content[]) => {
+				data.forEach(res => {
+					console.log(res.file_name);
+				})
+			}
+		)
 	}
-
 }

@@ -1,10 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PlayerModule } from './player/player.module';
 import { SplashModule } from './splash/splash.module';
- 
+import { PlayerService } from './services/player.service';
+
 @NgModule({
 	declarations: [
 		AppComponent
@@ -13,9 +15,12 @@ import { SplashModule } from './splash/splash.module';
 		BrowserModule,
 		PlayerModule,
 		SplashModule,
+		HttpClientModule,
 		AppRoutingModule
 	],
-	providers: [],
+	providers: [
+		PlayerService
+	],
 	bootstrap: [AppComponent]
 })
 

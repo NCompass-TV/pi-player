@@ -1,44 +1,10 @@
-<app-zone
-[zone_name]="main_zone.name"
-[zone_background]="main_zone.background"
-[zone_width]="main_zone.width"
-[zone_height]="main_zone.height"
-[zone_pos_x]="main_zone.pos_x"
-[zone_pos_y]="main_zone.pos_y"
-></app-zone>
-
-<app-zone
-[zone_name]="vert_zone.name"
-[zone_background]="vert_zone.background"
-[zone_width]="vert_zone.width"
-[zone_height]="vert_zone.height"
-[zone_pos_x]="vert_zone.pos_x"
-[zone_pos_y]="vert_zone.pos_y"
-></app-zone>
-
-<app-zone
-[zone_name]="feed_zone.name"
-[zone_background]="feed_zone.background"
-[zone_width]="feed_zone.width"
-[zone_height]="feed_zone.height"
-[zone_pos_x]="feed_zone.pos_x"
-[zone_pos_y]="feed_zone.pos_y"
-></app-zone>
-
-<app-zone
-[zone_name]="feed_zone.name"
-[zone_background]="feed_zone.background"
-[zone_width]="feed_zone.width"
-[zone_height]="feed_zone.height"
-[zone_pos_x]="feed_zone.pos_x"
-[zone_pos_y]="feed_zone.pos_y"
-></app-zone>
-
-<app-zone
-[zone_name]="logo_zone.name"
-[zone_background]="logo_zone.background"
-[zone_width]="logo_zone.width"
-[zone_height]="logo_zone.height"
-[zone_pos_x]="logo_zone.pos_x"
-[zone_pos_y]="logo_zone.pos_y"
-></app-zone>
+<ng-container *ngIf="(data$ | async) as zones">
+    <app-zone *ngFor="let zone of zones"
+    [zone_name]="zone.name"
+    [zone_background]="zone.background"
+    [zone_width]="zone.width"
+    [zone_height]="zone.height"
+    [zone_pos_x]="zone.x_pos"
+    [zone_pos_y]="zone.y_pos"
+    [zone_playlist_id]="zone.playlist_id"></app-zone>
+</ng-container>

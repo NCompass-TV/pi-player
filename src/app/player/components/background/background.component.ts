@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { PlayerService } from '../../../services/player.service';
+import { Observable } from 'rxjs';
+import { Template } from '../../../models/template.model';
 
 @Component({
 	selector: 'app-background',
@@ -7,45 +10,14 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class BackgroundComponent implements OnInit {
-	main_zone = {
-		name: 'Main',
-		background: '#111',
-		width: 1286,
-		height: 896,
-		pos_x: 0,
-		pos_y: 0
-	}
 
-	vert_zone = {
-		name: 'Vertical',
-		background: '#333',
-		width: 634,
-		height: 896,
-		pos_x: 1286,
-		pos_y: 0
-	}
+	data$: Observable<Template[]>;
 
-	feed_zone = {
-		name: 'Feed Zone',
-		background: "#555",
-		width: 1366,
-		height: 184,
-		pos_x: 554,
-		pos_y: 896
-	}
-
-	logo_zone = {
-		name: 'Logo Zone',
-		background: "#777",
-		width: 554,
-		height: 184,
-		pos_x: 0,
-		pos_y: 896
-	}
-
-	constructor() { }
+	constructor(
+		private player: PlayerService
+	) { }
 
 	ngOnInit() {
-
+		this.data$ = this.player.getTemplate();
 	}
 }
