@@ -16,6 +16,7 @@ export class VideoPlaylistComponent implements OnInit {
 	playlist_content$: Observable<Sequence[]>;
 	playlist_content_array = [];
 	current_video: string;
+	isFullscreen: boolean = false;
 	sequence_count: number = 0;
 
 	constructor(private player: PlayerService) {
@@ -30,9 +31,13 @@ export class VideoPlaylistComponent implements OnInit {
 		this.playlist_content$ = this.player.getPlaylistSequence(this.playlist_id);
 		this.playlist_content$.subscribe(
 			(data: Sequence[]) => {
-				console.log('Playlist Sequence', data);
 				data.forEach(element => {
-					this.playlist_content_array.push(element.name);
+					this.playlist_content_array.push(
+						{
+							name: element.name,
+							fullscreen: element.is_full_screen
+						}
+					);
 				})
 				this.playVideo();
 			},
@@ -44,8 +49,14 @@ export class VideoPlaylistComponent implements OnInit {
 
 	// Play Video
 	playVideo() {
-		this.current_video = `${environment.public_url}/${this.playlist_content_array[this.sequence_count]}`;
-		console.log('playVideo', this.current_video);
+		if (this.playlist_content_array[this.sequence_count].fullscreen == 1) {
+			this.isFullscreen = true;
+			console.log(this.isFullscreen, 'Fullscreen');
+		} else {
+			console.log(this.isFullscreen, 'Fullscreen');
+			this.isFullscreen = false;
+		}
+		this.current_video = `${environment.public_url}/${this.playlist_content_array[this.sequence_count].name}`;
 	}
 
 	// On Video Ended

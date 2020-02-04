@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { PlayerService } from '../../services/player.service';
 
 @Component({
 	selector: 'app-layout',
@@ -8,19 +7,7 @@ import { PlayerService } from '../../services/player.service';
 })
 
 export class LayoutComponent implements OnInit {
+	constructor() { }
 
-	constructor(
-		private player: PlayerService
-	) { }
-
-	ngOnInit() {
-		this.player.getContent().subscribe(
-			data => {
-				console.log(data);
-			}, 
-			error => {
-				console.log(error);
-			}
-		)
-	}
+	ngOnInit() {}
 }

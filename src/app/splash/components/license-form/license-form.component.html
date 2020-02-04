@@ -1,7 +1,12 @@
 <div class="container h-100 d-flex align-items-center">
-    <div class="form text-center">
-        <img src="assets/n-compass.png" class="logo" alt="">
-        <input class="input-field text-center" type="text" placeholder="Enter License" [(ngModel)]="license" #ctrl="ngModel">
-        <button class="button" (click)="setupLicense()">Register License</button>
-    </div>
+	<div class="form text-center w-100">
+		<form [formGroup]="register_license_form" (ngSubmit)="onSubmit()">
+			<img src="assets/n-compass.png" class="logo" alt="">
+			<input class="input-field text-center" 
+			type="text" 
+			placeholder="Enter License" 
+			formControlName="license">
+			<button class="button" type="submit">Register License</button>
+		</form>
+	</div>
 </div>

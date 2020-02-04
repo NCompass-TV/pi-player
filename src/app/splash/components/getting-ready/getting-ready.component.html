@@ -1,0 +1,13 @@
+<div class="getting-ready">
+    <img src="assets/n-compass.png" class="logo" alt="">
+    <div class="container h-100 d-flex align-items-center">
+        <div class=" w-100">
+                <ul class="message-list">
+                    <li class="message-item">
+                        <h1 class="setup-message" [ngClass]="showMessage ? 'fadeIn' : 'fadeOut'">{{ setup_message[message_count] }}</h1>
+                    </li>
+                </ul>
+            <app-progress-bar></app-progress-bar>
+        </div>
+    </div>
+</div> 

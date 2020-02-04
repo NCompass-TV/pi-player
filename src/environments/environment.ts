@@ -4,7 +4,11 @@
 
 export const environment = {
   production: false,
-  public_url: 'http://localhost:3215'
+  public_url: 'http://localhost:3215/',
+  server_url: 'http://52.73.23.100/N-CompassAPI/api/',
+  systemInfo: 'systeminfo',
+  registerLicense: 'license/register',
+  piDownloader: 'pidownloader/getcontents?licensekey='
 };
 
 /*

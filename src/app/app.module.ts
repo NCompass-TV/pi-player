@@ -5,6 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PlayerModule } from './player/player.module';
 import { SplashModule } from './splash/splash.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PlayerService } from './services/player.service';
 
 @NgModule({
@@ -16,7 +17,9 @@ import { PlayerService } from './services/player.service';
 		PlayerModule,
 		SplashModule,
 		HttpClientModule,
-		AppRoutingModule
+		AppRoutingModule,
+		FormsModule,
+		ReactiveFormsModule,
 	],
 	providers: [
 		PlayerService

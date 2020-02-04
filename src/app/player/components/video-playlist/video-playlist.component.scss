@@ -1,3 +1,11 @@
 video {
     width: 100%;
 }
+
+.fullscreen {
+    background-color: #000;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    z-index: 9;
+}

@@ -1,1 +1,7 @@
-<app-license-form></app-license-form>
+<ng-container *ngIf="!license_is_registered_and_activated; else getting_ready">
+    <app-license-form></app-license-form>
+</ng-container>
+
+<ng-template #getting_ready>
+    <app-getting-ready></app-getting-ready>
+</ng-template>
