@@ -4,11 +4,17 @@
 
 export const environment = {
   production: false,
-  public_url: 'http://localhost:3215/',
+  // DotNet Server
   server_url: 'http://52.73.23.100/N-CompassAPI/api/',
-  systemInfo: 'systeminfo',
+  piDownloader: 'pidownloader/getcontents?licensekey=',
   registerLicense: 'license/register',
-  piDownloader: 'pidownloader/getcontents?licensekey='
+  // Nodejs Server
+  public_url: 'http://localhost:3215',
+  systemInfo: '/systeminfo',
+  saveLicense: '/save-settings/',
+  saveData: '/save-data',
+  selectTemplate: '/select_data/template',
+  saveDataAndDownload: '/select_data/content'
 };
 
 /*

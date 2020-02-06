@@ -8,8 +8,9 @@ import { PlayerService } from '../../../services/player.service';
 })
 
 export class RegisterLicenseComponent implements OnInit {
-	
-	constructor() { }
+	constructor(
+		private playerService: PlayerService
+	) { }
 
 	ngOnInit() {
 	}

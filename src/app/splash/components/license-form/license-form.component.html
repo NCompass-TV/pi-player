@@ -2,10 +2,19 @@
 	<div class="form text-center w-100">
 		<form [formGroup]="register_license_form" (ngSubmit)="onSubmit()">
 			<img src="assets/n-compass.png" class="logo" alt="">
-			<input class="input-field text-center" 
-			type="text" 
-			placeholder="Enter License" 
-			formControlName="license">
+			<div class="form-group">
+				<input class="input-field text-center" 
+				type="text" 
+				placeholder="Enter License" 
+				formControlName="license"
+				[ngClass]="{ 'is-invalid': submitted && f.lastname.errors }">
+				<div class="error-message" *ngIf="is_submitted && f.license.errors">
+					<span *ngIf="f.license.errors.required">License is required</span>
+				</div>
+				<div class="error-message server-message" *ngIf="is_submitted && internal_server">
+					<span>{{ server_error }}</span>
+				</div>
+			</div>
 			<button class="button" type="submit">Register License</button>
 		</form>
 	</div>

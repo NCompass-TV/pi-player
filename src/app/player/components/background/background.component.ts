@@ -14,10 +14,15 @@ export class BackgroundComponent implements OnInit {
 	data$: Observable<Template[]>;
 
 	constructor(
-		private player: PlayerService
+		private playerService: PlayerService
 	) { }
 
 	ngOnInit() {
-		this.data$ = this.player.getTemplate();
+		this.data$ = this.playerService.getTemplate();
+		this.data$.subscribe(
+			data => {
+				console.log(data);
+			}
+		)
 	}
 }

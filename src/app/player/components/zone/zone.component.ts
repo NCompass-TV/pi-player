@@ -41,14 +41,11 @@ export class ZoneComponent implements OnInit {
 	}
 
 	getPlaylistType() {
-		this.playlist_type$ = this.player.getPlaylistType(this.zone_playlist_id);
+		console.log('test');
+		this.playlist_type$ = this.player.getTemplate();
 		this.playlist_type$.subscribe(
 			(data: PlaylistTypeModel[]) => {
-				data.forEach(
-					element => {
-						this.playlist_type = element.playlist_type;
-					}
-				)
+				console.log(data);
 			}
 		)
 	}

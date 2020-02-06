@@ -17,9 +17,17 @@ export class PlayerService {
 		return this.http.post<any>(`${environment.server_url}${environment.registerLicense}`, data);
 	}
 
+	saveLicense(licensekey) {
+		return this.http.post<any>(`${environment.public_url}${environment.saveLicense}${licensekey}`, null);
+	}
+
 	// Check License Activation
-	downloadPlayerContent(licensekey) {
-		return this.http.get<any>(`${environment.server_url}${licensekey}`);
+	getPlayerContentOnServer(licensekey) {
+		return this.http.get<any>(`${environment.server_url}${environment.piDownloader}${licensekey}`);
+	}
+
+	savePlayerContentOnPi(data) {
+		return this.http.post<any>(`${environment.public_url}${environment.saveData}`, data);
 	}
 
 	// Get Device Info
@@ -28,22 +36,17 @@ export class PlayerService {
 	}
 
 	// Run this if license is activated
-	getContent() {
-		return this.http.get<any>(`${environment.public_url}/content`, { reportProgress: true, observe: 'events' }).pipe(map(data => data));
+	downloadPlayerContent() {
+		return this.http.get<any>(`${environment.public_url}${environment.saveDataAndDownload}`, { reportProgress: true, observe: 'events' });
 	}
 
 	// Then get template details
 	getTemplate() {
-		return this.http.get<any>(`${environment.public_url}/template`).pipe(map(data => data));
+		return this.http.get<any>(`${environment.public_url}${environment.selectTemplate}`).pipe(map(data => data));
 	}
 
 	// Then get playlist sequence
 	getPlaylistSequence(id) {
-		return this.http.get<any>(`${environment.public_url}/playlist/${id}`).pipe(map(data => data));
-	}
-
-	// Then get playlist type
-	getPlaylistType(id) {
-		return this.http.get<any>(`${environment.public_url}/playlist/type/${id}`).pipe(map(data => data));
+		return this.http.get<any>(`${environment.public_url}/select_data/playlist/${id}`).pipe(map(data => data));
 	}
 }

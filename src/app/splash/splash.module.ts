@@ -5,14 +5,17 @@ import { SPLASH_ROUTES } from './splash.routes';
 import { LayoutComponent } from './layout/layout.component';
 import { RegisterLicenseComponent } from './pages/register-license/register-license.component';
 import { LicenseFormComponent } from './components/license-form/license-form.component';
-import { GettingReadyComponent } from './components/getting-ready/getting-ready.component';
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PreparingPlayerComponent } from './pages/preparing-player/preparing-player.component';
 
 @NgModule({
 	declarations: [
-		LayoutComponent, 
-		RegisterLicenseComponent, LicenseFormComponent, GettingReadyComponent, ProgressBarComponent
+		LayoutComponent,
+		RegisterLicenseComponent, 
+		LicenseFormComponent, 
+		ProgressBarComponent, 
+		PreparingPlayerComponent
 	],
 
 	imports: [
