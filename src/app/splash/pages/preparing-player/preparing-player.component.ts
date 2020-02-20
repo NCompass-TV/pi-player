@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { PlayerService } from 'src/app/services/player.service';
 import { Router } from '@angular/router';
+import { Socket } from 'ngx-socket-io';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-preparing-player',
@@ -21,17 +23,41 @@ export class PreparingPlayerComponent implements OnInit {
 	];
 
 	showMessage: boolean = false;
-
+	content_count: number = 0;
+	download_counter: number = 0;
+	download_status: number = 0;
 	message_count = 0;
 
 	constructor(
 		private playerService: PlayerService,
-		private router: Router
+		private router: Router,
+		private _http: HttpClient,
+		private _socket: Socket
 	) { }
 
 	ngOnInit() {
 		this.setupMessage();
 		this.saveLicense(this.license_key);
+		this._socket.on('content_to_download', (data) => {
+			this.content_count = data;
+			console.log('DOWNLOAD TOTAL: ', data);
+		})
+		this._socket.on('downloaded_content', (data) => {
+			this.download_counter = data;
+			this.download_status = (this.download_counter/this.content_count) * 100;
+			console.log('DOWNLOAD COUNTER: ', data, this.download_status);
+			this.downloadProgressChecker();
+		})
+
+	}
+
+	downloadProgressChecker() {
+		if(this.content_count === this.download_counter) {
+			console.log('redirecting...')
+			setTimeout(() => {
+				this.router.navigate(['/player']);
+			}, 5000)
+		}
 	}
 
 	setupMessage() {
@@ -90,7 +116,6 @@ export class PreparingPlayerComponent implements OnInit {
 		this.playerService.downloadPlayerContent().subscribe(
 			data => {
 				console.log('#downloadPlayerAssets', data);
-				this.router.navigate(['/player']);
 			}, 
 			error => {
 				console.log('#downloadPlayerAssets', error);

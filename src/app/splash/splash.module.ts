@@ -9,6 +9,9 @@ import { ProgressBarComponent } from './components/progress-bar/progress-bar.com
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PreparingPlayerComponent } from './pages/preparing-player/preparing-player.component';
 import { UnactivatedComponent } from './pages/unactivated/unactivated.component';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+
+const config: SocketIoConfig = { url: 'http://localhost:3215', options: {} };
 
 @NgModule({
 	declarations: [
@@ -24,7 +27,8 @@ import { UnactivatedComponent } from './pages/unactivated/unactivated.component'
 		CommonModule,
 		FormsModule,
         ReactiveFormsModule,
-		RouterModule.forChild(SPLASH_ROUTES)
+		RouterModule.forChild(SPLASH_ROUTES),
+		SocketIoModule.forRoot(config)
 	],
 
 	exports: [
