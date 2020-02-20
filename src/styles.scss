@@ -2,6 +2,7 @@
 body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
+    overflow: hidden;
 }
 
 input, button {
@@ -21,8 +22,12 @@ input, button {
     display: flex;
 }
 
-.h-100 {
+.vh-100 {
     height: 100vh;
+}
+
+.h-100 {
+    height: 100%;
 }
 
 .justify-content-center {

@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { RegisterLicenseComponent } from './pages/register-license/register-license.component';
 import { PreparingPlayerComponent } from './pages/preparing-player/preparing-player.component';
+import { UnactivatedComponent } from './pages/unactivated/unactivated.component';
 
 export const SPLASH_ROUTES: Routes = [
 	{
@@ -15,6 +16,10 @@ export const SPLASH_ROUTES: Routes = [
             {
                 path: 'getting-ready',
                 component: PreparingPlayerComponent
+            },
+            {
+                path: 'screen-saver',
+                component: UnactivatedComponent
             }
         ]
     }

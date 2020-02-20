@@ -2,7 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PlaylistTypeModel } from '../../../models/playlist-type-model.model';
 import { PlayerService } from '../../../services/player.service';
-import { PlaylistType } from '../../../models/playlistType';
+import { Template } from '../../../models/template.model';
+import { PlaylistType } from 'src/app/models/playlistType';
 
 @Component({
 	selector: 'app-zone',
@@ -20,6 +21,7 @@ export class ZoneComponent implements OnInit {
 	@Input() zone_pos_x: string;
 	@Input() zone_pos_y: string;
 	@Input() zone_playlist_id: string;
+	@Input() zone_playlist_type: string;
 	
 	// Internal
 	playlist_type$: Observable<PlaylistTypeModel[]>;
@@ -29,24 +31,10 @@ export class ZoneComponent implements OnInit {
 	videos = PlaylistType.videos;
 	video_image = PlaylistType.video_image;
 
-	// Identifiers
-	playlist_type: string;
-
 	constructor(
-		private player: PlayerService
+		private playerService: PlayerService
 	) { }
 
 	ngOnInit() {
-		this.getPlaylistType();
-	}
-
-	getPlaylistType() {
-		console.log('test');
-		this.playlist_type$ = this.player.getTemplate();
-		this.playlist_type$.subscribe(
-			(data: PlaylistTypeModel[]) => {
-				console.log(data);
-			}
-		)
 	}
 }

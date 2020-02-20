@@ -8,6 +8,7 @@ import { LicenseFormComponent } from './components/license-form/license-form.com
 import { ProgressBarComponent } from './components/progress-bar/progress-bar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PreparingPlayerComponent } from './pages/preparing-player/preparing-player.component';
+import { UnactivatedComponent } from './pages/unactivated/unactivated.component';
 
 @NgModule({
 	declarations: [
@@ -15,7 +16,8 @@ import { PreparingPlayerComponent } from './pages/preparing-player/preparing-pla
 		RegisterLicenseComponent, 
 		LicenseFormComponent, 
 		ProgressBarComponent, 
-		PreparingPlayerComponent
+		PreparingPlayerComponent,
+		UnactivatedComponent
 	],
 
 	imports: [

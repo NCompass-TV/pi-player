@@ -21,7 +21,7 @@ export class BackgroundComponent implements OnInit {
 		this.data$ = this.playerService.getTemplate();
 		this.data$.subscribe(
 			data => {
-				console.log(data);
+				console.log('#BackgroundComponent, #getTemplate', data);
 			}
 		)
 	}

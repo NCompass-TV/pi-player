@@ -49,4 +49,9 @@ export class PlayerService {
 	getPlaylistSequence(id) {
 		return this.http.get<any>(`${environment.public_url}/select_data/playlist/${id}`).pipe(map(data => data));
 	}
+
+	// Time Checker
+	getTime() {
+		return this.http.get('http://worldtimeapi.org/api/ip');
+	}
 }

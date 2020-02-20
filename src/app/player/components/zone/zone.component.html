@@ -7,17 +7,18 @@
     'top.px': zone_pos_y}">
 
     <!-- Video Playlist -->
-    <div *ngIf="playlist_type == videos">
-        <!-- <app-video-playlist
+    <div *ngIf="zone_playlist_type == videos" class="h-100">
+        <app-video-playlist
         [playlist_id]="zone_playlist_id">
-        </app-video-playlist> -->
+        </app-video-playlist
+        >
     </div>
 
     <!-- Image Slide Playlist -->
-    <div *ngIf="playlist_type == slides">
-        <!-- <app-slide-playlist 
+    <div *ngIf="zone_playlist_type == slides"  class="h-100">
+        <app-slide-playlist
         [playlist_id]="zone_playlist_id">
-        </app-slide-playlist> -->
+        </app-slide-playlist>
     </div>
 
 </div>

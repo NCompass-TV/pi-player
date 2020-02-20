@@ -73,7 +73,7 @@ export class LicenseFormComponent implements OnInit {
 					console.log('License is Activated, redirecting...');
 					this.router.navigate(['/setup/getting-ready']);
 				} else {
-					console.log('Not Activated')
+					this.router.navigate(['/setup/screen-saver']);
 				}
 			},
 			error => {

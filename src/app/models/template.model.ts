@@ -8,4 +8,5 @@ export class Template {
     name: string;
     background: string;
     playlist_id: number;
+    playlist_type: string;
 }
