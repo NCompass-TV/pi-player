@@ -82,6 +82,7 @@ export class PreparingPlayerComponent implements OnInit {
 			},
 			error => {
 				console.log(error);
+				this.router.navigate(['/setup/screen-saver']);
 			}
 		)
 	}

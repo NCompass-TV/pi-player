@@ -1,21 +1,29 @@
-<div class="container vh-100 d-flex align-items-center">
-	<div class="form text-center w-100">
-		<form [formGroup]="register_license_form" (ngSubmit)="onSubmit()">
-			<img src="assets/n-compass.png" class="logo" alt="">
-			<div class="form-group">
-				<input class="input-field text-center" 
-				type="text" 
-				placeholder="Enter License" 
-				formControlName="license"
-				[ngClass]="{ 'is-invalid': submitted && f.lastname.errors }">
-				<div class="error-message" *ngIf="is_submitted && f.license.errors">
-					<span *ngIf="f.license.errors.required">License is required</span>
+<div class="container vh-100 d-flex justify-content-center align-items-center">
+	<div class="w-100 text-center position-relative">
+		<img src="assets/n-compass.png" class="logo" alt="ncompass">
+		<div class="form text-center w-100">
+			<form [formGroup]="register_license_form" (ngSubmit)="onSubmit()">
+				<div class="form-group">
+					<input class="input-field text-center" 
+					type="text" 
+					placeholder="Enter License" 
+					formControlName="license"
+					[ngClass]="{ 'is-invalid': is_submitted && f.license.errors }">
+					<div class="error-message" *ngIf="is_submitted && f.license.errors">
+						<span *ngIf="f.license.errors.required">License is required</span>
+					</div>
+					<div class="error-message server-message" *ngIf="is_submitted && internal_server">
+						<span>{{ server_error }}</span>
+					</div>
 				</div>
-				<div class="error-message server-message" *ngIf="is_submitted && internal_server">
-					<span>{{ server_error }}</span>
-				</div>
+				<button class="button" type="submit">Register License</button>
+			</form>
+		</div>
+		
+		<ng-container *ngIf="is_submitted">
+			<div class="overlay d-flex align-items-center justify-content-center">
+				<app-loader></app-loader>
 			</div>
-			<button class="button" type="submit">Register License</button>
-		</form>
+		</ng-container>
 	</div>
 </div>

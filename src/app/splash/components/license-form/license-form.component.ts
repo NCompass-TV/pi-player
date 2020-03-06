@@ -37,22 +37,17 @@ export class LicenseFormComponent implements OnInit {
 	get f() { return this.register_license_form.controls; }
 
 	onSubmit() {
-		this.is_submitted = true;
 		if (this.f.license.value != '') {
-			this.playerService.getDeviceInfo().subscribe(
-				data => {
-					this.pi_info = {
-						licensekey: this.f.license.value,
-						macaddress: data.macaddress,
-						memory: data.memory,
-						internettype: data.internettype,
-						internetspeed: data.internetspeed,
-						totalstorage: data.storage.total,
-						freestorage: `${100 - data.storage.used} %`
+			this.is_submitted = true;
+			this.playerService.clearDatabase().subscribe(
+				(data: any) => {
+					if(data.message) {
+						this.internal_server = true;
+					} else {
+						console.log('cleardb', data, data.message);
+						this.getDeviceInfo();
 					}
-					this.registerLicense(this.pi_info);
-					localStorage.setItem("license_key", this.f.license.value);
-				},
+				}, 
 				error => {
 					console.log(error);
 				}
@@ -62,6 +57,27 @@ export class LicenseFormComponent implements OnInit {
 				this.is_submitted = false;
 			}, 4000);
 		}
+	}
+
+	getDeviceInfo() {
+		this.playerService.getDeviceInfo().subscribe(
+			data => {
+				this.pi_info = {
+					licensekey: this.f.license.value,
+					macaddress: data.macaddress,
+					memory: data.memory,
+					internettype: data.internettype,
+					internetspeed: data.internetspeed,
+					totalstorage: data.storage.total,
+					freestorage: `${100 - data.storage.used} %`
+				}
+				this.registerLicense(this.pi_info);
+				localStorage.setItem("license_key", this.f.license.value);
+			},
+			error => {
+				console.log(error);
+			}
+		)
 	}
 
 	registerLicense(data) {

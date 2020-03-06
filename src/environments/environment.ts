@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   // DotNet Server
-  server_url: 'http://52.73.23.100/N-CompassAPI/api/',
+  server_url: 'http://44.192.0.172:92/api/',
   piDownloader: 'pidownloader/getcontents?licensekey=',
   registerLicense: 'license/register',
   // Nodejs Server
@@ -14,7 +14,8 @@ export const environment = {
   saveLicense: '/save-settings/',
   saveData: '/save-data',
   selectTemplate: '/select_data/template',
-  saveDataAndDownload: '/select_data/content'
+  saveDataAndDownload: '/select_data/content',
+  clearDatabase: '/select_data/content/cleardb'
 };
 
 /*
