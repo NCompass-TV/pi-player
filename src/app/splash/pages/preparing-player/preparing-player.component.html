@@ -4,13 +4,16 @@
         <div class=" w-100">
                 <ul class="message-list">
                     <li class="message-item">
-                        <h1 class="setup-message" [ngClass]="showMessage ? 'fadeIn' : 'fadeOut'">{{ setup_message[message_count] }}</h1>
+                        <h1 class="setup-message" [ngClass]="showMessage ? 'fadeIn' : 'fadeOut'">
+                            <span >
+                                {{ setup_message[message_count] }}
+                            </span>
+                        </h1>
                     </li>
                 </ul>
             <app-progress-bar
             [progress]="download_status"></app-progress-bar>
-            <p class="sm-text">Download Progress: {{ download_status }}</p>
+            <p class="sm-text">Download Progress: <span class="percent_count">{{ download_status | number: '1.0-0' }}%</span></p>
         </div>
     </div>
-</div> 
-ss
+</div>

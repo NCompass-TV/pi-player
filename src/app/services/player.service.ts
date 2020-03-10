@@ -16,6 +16,10 @@ export class PlayerService {
 		return this.http.get(`${environment.public_url}${environment.clearDatabase}`);
 	}
 
+	hasLicense() {
+		return this.http.get(`${environment.public_url}${environment.hasLicense}`);
+	}
+
 	// Register License
 	registerLicense(data) {
 		return this.http.post<any>(`${environment.server_url}${environment.registerLicense}`, data);
