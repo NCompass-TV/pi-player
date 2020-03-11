@@ -16,7 +16,7 @@ export class RegisterLicenseComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-		this.playerService.hasLicense().subscribe(
+		this.playerService.has_license().subscribe(
 			(data: HasLicense) => {
 				console.log('ngOnInithasLicense', data);
 				if(data.has_license == true && data.license != null) {

@@ -39,7 +39,7 @@ export class LicenseFormComponent implements OnInit {
 	onSubmit() {
 		if (this.f.license.value != '') {
 			this.is_submitted = true;
-			this.playerService.clearDatabase().subscribe(
+			this.playerService.clear_database().subscribe(
 				(data: any) => {
 					if(data.message) {
 						this.internal_server = true;
@@ -59,8 +59,12 @@ export class LicenseFormComponent implements OnInit {
 		}
 	}
 
+	clearDatabase() {
+
+	}
+
 	getDeviceInfo() {
-		this.playerService.getDeviceInfo().subscribe(
+		this.playerService.get_pi_info().subscribe(
 			data => {
 				this.pi_info = {
 					licensekey: this.f.license.value,
@@ -82,7 +86,7 @@ export class LicenseFormComponent implements OnInit {
 
 	registerLicense(data) {
 		console.log('#registerLicense', data);
-		this.playerService.registerLicense(data).subscribe(
+		this.playerService.register_license(data).subscribe(
 			data => {
 				console.log('#registerLicense_data', data);
 				if (data.isActivated == 1) {

@@ -18,7 +18,7 @@ export class BackgroundComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-		this.data$ = this.playerService.getTemplate();
+		this.data$ = this.playerService.get_template();
 		this.data$.subscribe(
 			data => {
 				console.log('#BackgroundComponent, #getTemplate', data);

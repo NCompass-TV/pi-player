@@ -21,11 +21,10 @@ export class VideoPlaylistComponent implements OnInit {
 
 	constructor(
 		private playerService: PlayerService
-	) {
-	}
+	) {}
 
 	ngOnInit() {
-		this.playerService.getPlaylistSequence(this.playlist_id).subscribe(
+		this.playerService.get_playlist_sequence(this.playlist_id).subscribe(
 			data => {
 				console.log(data);
 				this.playlist_content_array = data;

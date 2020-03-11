@@ -107,7 +107,7 @@ export class PreparingPlayerComponent implements OnInit {
 	}
 
 	saveLicense(licensekey) {
-		this.playerService.saveLicense(licensekey).subscribe(
+		this.playerService.save_license(licensekey).subscribe(
 			data => {
 				console.log('#saveLicense', data);
 				this.getPlayerContent(licensekey);
@@ -122,7 +122,7 @@ export class PreparingPlayerComponent implements OnInit {
 	// Fetched Player Data from Server
 	getPlayerContent(licensekey) {
 		this.subscription.add(
-			this.playerService.getPlayerContentOnServer(licensekey).subscribe(
+			this.playerService.get_player_content_on_server(licensekey).subscribe(
 				data => {
 					console.log('#getPlayerContent', data);
 					this.savePlayerContent(data);
@@ -138,7 +138,7 @@ export class PreparingPlayerComponent implements OnInit {
 	// Save Fetched Content From Server to Pi
 	savePlayerContent(data) {
 		this.subscription.add(
-			this.playerService.savePlayerContentOnPi(data).subscribe(
+			this.playerService.save_player_content_on_pi(data).subscribe(
 				data => {
 					console.log('#savedPlayerContent', data);
 					this.downloadPlayerAssets();
@@ -153,7 +153,7 @@ export class PreparingPlayerComponent implements OnInit {
 
 	downloadPlayerAssets() {
 		this.subscription.add(
-			this.playerService.downloadPlayerContent().subscribe(
+			this.playerService.download_player_content().subscribe(
 				data => {
 					console.log('#downloadPlayerAssets', data);
 				}, 
