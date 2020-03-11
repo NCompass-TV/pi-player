@@ -5,6 +5,7 @@ import { Socket } from 'ngx-socket-io';
 import { HttpClient } from '@angular/common/http';
 import { HasLicense } from 'src/app/models/has-license.model';
 import { Subscription } from 'rxjs';
+import { PiInfo } from '../../../models/pi-info.model';
 
 @Component({
   selector: 'app-preparing-player',
@@ -12,6 +13,8 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./preparing-player.component.scss']
 })
 export class PreparingPlayerComponent implements OnInit {
+
+	license_key: string = localStorage.getItem('license_key');
 
 	setup_message = [
 		"Welcome! Thank you for choosing us",
@@ -24,32 +27,37 @@ export class PreparingPlayerComponent implements OnInit {
 
 	subscription: Subscription = new Subscription;
 	showMessage: boolean = false;
+	has_license: boolean = false;
+	has_license_key: string;
+	download_success: boolean = false;
+	interval: number;
 	content_count: number = 0;
 	download_counter: number = 0;
 	download_status: number = 0;
-	download_success: boolean = false;
 	message_count = 0;
 
 	constructor(
-		private playerService: PlayerService,
-		private router: Router,
+		private _player_service: PlayerService,
 		private _params: ActivatedRoute,
-		private _http: HttpClient,
+		private _router: Router,
 		private _socket: Socket
 	) { }
 
 	ngOnInit() {
-		
+		// 1. Pi Player: Check if License already exist in Pi Player
 		this.subscription.add(
 			this._params.queryParams.subscribe(
 				(q: HasLicense) => {
-					console.log('hasLicense', q)
 					if (q.license) {
-						this.getPlayerContent(q.license);
+						console.log('License already exist in this device', q)
+						console.log('#PreparingPlayerComponent says License already exists in this device: ', q.license);
+						this.has_license = true;
+						this.has_license_key = q.license;
+						this.clearDatabase();
 					} else {
-						this.saveLicense(localStorage.getItem('license_key'));
+						console.log('#PreparingPlayerComponent this is a fresh device: ', this.license_key);
+						this.clearDatabase();
 					}
-
 					return false;
 				}, 
 				err => {
@@ -57,37 +65,32 @@ export class PreparingPlayerComponent implements OnInit {
 				}
 			)
 		)
-		
-		this.setupMessage();
+
+		// Setup Message Array is displayed
+		this.setupMessage(7000);
+
+		// Socket Connection to get current download progress
 		this._socket.on('content_to_download', (data) => {
 			this.content_count = data;
-			// console.log('DOWNLOAD TOTAL: ', data);
 		})
 
+		// Socket Connection to check if contents are downloaded successfully
 		this._socket.on('downloaded_content', (data) => {
 			this.download_counter = data;
 			this.download_status = (this.download_counter/this.content_count) * 100;
-			// console.log('DOWNLOAD COUNTER: ', data, this.download_status);
 			this.downloadProgressChecker();
 		})
-
 	}
+
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
 	}
 
-	downloadProgressChecker() {
-		if(this.content_count === this.download_counter) {
-			this.download_success = true;
-			this.setupMessage();
-			setTimeout(() => {
-				this.router.navigate(['/player']);
-			}, 10000)
-		}
-	}
-
-	setupMessage() {
+	
+	// Pi: Setup Display Messages
+	setupMessage(interval) {
+		this.interval = interval;
 		setInterval(() => {
 			this.showMessage = true;
 			setTimeout(() => {
@@ -103,65 +106,111 @@ export class PreparingPlayerComponent implements OnInit {
 					this.message_count = this.setup_message.length - 1;
 				}
 			}, 1000);
-		}, 10000)
+		}, this.interval)
 	}
 
-	saveLicense(licensekey) {
-		this.playerService.save_license(licensekey).subscribe(
-			data => {
-				console.log('#saveLicense', data);
-				this.getPlayerContent(licensekey);
-			},
-			error => {
-				this.router.navigate(['/setup/screen-saver']);
-				console.log('saveLicense', error);
-			}
-		)
-	}
 
-	// Fetched Player Data from Server
-	getPlayerContent(licensekey) {
+	// 2. Pi: Clear Pi Player's SQLite Database
+	clearDatabase() {
 		this.subscription.add(
-			this.playerService.get_player_content_on_server(licensekey).subscribe(
+			this._player_service.clear_database().subscribe(
 				data => {
-					console.log('#getPlayerContent', data);
-					this.savePlayerContent(data);
-				},
+					console.log('#PreparingPlayerComponent - clearDatabase() - Success: ', data);
+					if(!this.has_license) {
+						this.saveLicense();
+					} else {
+						this.getPlayerContent(this.has_license_key);
+					}
+				}, 
 				error => {
-					this.router.navigate(['/setup/screen-saver']);
-					console.log('#getPlayerContent', error);
+					// Must add redirection to Fatal Error Page...
+					console.log('#PreparingPlayerComponent - clearDatabase() - Fatal Error: ', error);
 				}
 			)
 		)
 	}
 
-	// Save Fetched Content From Server to Pi
+	
+	// 3. Pi: Save Entered License to Pi
+	saveLicense() {
+		this.subscription.add(
+			this._player_service.save_license(this.license_key).subscribe(
+				data => {
+					console.log('#PreparingPlayerComponent - saveLicense() - Success: ', data);
+					this.getPlayerContent(this.license_key);
+				},
+				error => {
+					// Must add redirection to Fatal Error Page...
+					console.log('#PreparingPlayerComponent - saveLicense() - Fatal Error: ', error);
+				}
+			)
+		)
+	}
+
+
+	// 4. Dashboard Server: Get All Pi Player Content from Dashboard Server
+	getPlayerContent(license_key) {
+		this.subscription.add(
+			this._player_service.get_player_content_on_server(license_key).subscribe(
+				data => {
+					console.log('#PreparingPlayerComponent - getPlayerContent() - Success: ', data);
+					if(data.message) {
+						this._router.navigate(['/setup/screen-saver']);
+					} else {
+						this.savePlayerContent(data);
+					}
+				},
+				error => {
+					// Must add redirection to Fatal Error Page...
+					console.log('#PreparingPlayerComponent - getPlayerContent() - Fatal Error: ', error);
+				}
+			)
+		)
+	}
+
+
+	// 5. Pi: Save Fetched Content from Dashboard Server to Pi Player
 	savePlayerContent(data) {
 		this.subscription.add(
-			this.playerService.save_player_content_on_pi(data).subscribe(
+			this._player_service.save_player_content_on_pi(data).subscribe(
 				data => {
-					console.log('#savedPlayerContent', data);
+					console.log('#PreparingPlayerComponent - savePlayerContent() - Success: ', data);
 					this.downloadPlayerAssets();
 				},
 				error => {
-					this.router.navigate(['/setup/screen-saver']);
-					console.log('#savePlayerContent', error);
+					// Must add redirection to Fatal Error Page...
+					console.log('#PreparingPlayerComponent - savePlayerContent() - Fatal Error: ', error);
 				}
 			)
 		)
 	}
 
+
+	// 6. Pi: Download Media Files to Pi Player
 	downloadPlayerAssets() {
 		this.subscription.add(
-			this.playerService.download_player_content().subscribe(
+			this._player_service.download_player_content().subscribe(
 				data => {
-					console.log('#downloadPlayerAssets', data);
+					console.log('#PreparingPlayerComponent - downloadPlayerAssets() - Success: ', data);
 				}, 
 				error => {
-					this.router.navigate(['/setup/screen-saver']);
-					console.log('#downloadPlayerAssets', error);
+					// Must add redirection to Fatal Error Page...
+					console.log('#PreparingPlayerComponent - downloadPlayerAssets() - Fatal Error: ', error);
 				}
 			)
 		)
+	}
+
+
+	// 7. If this returns 100, means download is succesful and will redirect to player
+	downloadProgressChecker() {
+		if(this.content_count === this.download_counter) {
+			console.log('Player Data is saved and Contents are downloaded, will now redirect to player in few seconds');
+			this.download_success = true;
+			this.setupMessage(12000);
+			setTimeout(() => {
+				this._router.navigate(['/player']);
+			}, 10000)
+		}
 	}
 }

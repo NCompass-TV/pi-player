@@ -57,12 +57,19 @@ input, button {
         color: #ffffff;
         cursor: pointer;
         font-size: 14px;
+        font-weight: 500;
         outline: none;
+        letter-spacing: 1px;
         padding: 15px 30px;
         transition: 0.2s linear;
         text-transform: uppercase;
         &:hover {
             background: #8ec641;
+        }
+
+        &:disabled {
+            background-color: #bbb;
+            cursor: no-drop;
         }
     }
 
