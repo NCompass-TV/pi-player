@@ -48,28 +48,19 @@ export class PreparingPlayerComponent implements OnInit {
 
 		// 1. Pi Player: Check if License already exist in Pi Player
 		this.subscription.add(
-			this._params.queryParams.subscribe(
-				(q: HasLicense) => {
-					console.log('Query Params', q);
-					if (q.update_player) {
-						console.log('UPDATE PLAYER')
-						this.is_update = true;
-					}
-
-					if (q.license) {
-						console.log('License already exist in this device', q)
-						console.log('#PreparingPlayerComponent says License already exists in this device: ', q.license);
-						this.has_license = true;
-						this.has_license_key = q.license;
-						this.clearDatabase();
+			this._player_service.get_license_from_db().subscribe(
+				(data: any) => {
+					console.log('License Saved', data)
+					if (data.license_key) {
+						// Update
+						this.clearDatabase(true, null);
 					} else {
-						console.log('#PreparingPlayerComponent this is a fresh device: ', this.license_key);
-						this.clearDatabase();
+						// Fresh Install
+						this.clearDatabase(false, this.license_key)
 					}
-					return false;
-				}, 
-				err => {
-					console.log('errorHasLicense', err);
+				},
+				error => {
+					console.log(error);
 				}
 			)
 		)
@@ -102,7 +93,6 @@ export class PreparingPlayerComponent implements OnInit {
 		this._socket.disconnect();
 	}
 
-	
 	// Pi: Setup Display Messages
 	setupMessage(interval) {
 		if (!this.is_update) {
@@ -128,13 +118,14 @@ export class PreparingPlayerComponent implements OnInit {
 
 
 	// 2. Pi: Clear Pi Player's SQLite Database
-	clearDatabase() {
+	clearDatabase(has_license: boolean, license_key: string) {
 		this.subscription.add(
 			this._player_service.clear_database().subscribe(
 				data => {
 					console.log('#PreparingPlayerComponent - clearDatabase() - Success: ', data);
-					if(!this.has_license) {
-						this.saveLicense();
+					if(!has_license) {
+						// this.saveLicense();
+						this.saveLicenseToDb(license_key);
 					} else {
 						this.getPlayerContent(this.has_license_key);
 					}
@@ -149,16 +140,17 @@ export class PreparingPlayerComponent implements OnInit {
 
 	
 	// 3. Pi: Save Entered License to Pi
-	saveLicense() {
+	saveLicenseToDb(data) {
+		const license = { license_key: data };
 		this.subscription.add(
-			this._player_service.save_license(this.license_key).subscribe(
+			this._player_service.save_license_to_db(license).subscribe(
 				data => {
 					console.log('#PreparingPlayerComponent - saveLicense() - Success: ', data);
 					this.getPlayerContent(this.license_key);
 				},
 				error => {
-					// Must add redirection to Fatal Error Page...
-					console.log('#PreparingPlayerComponent - saveLicense() - Fatal Error: ', error);
+					console.log(error);
+					this._router.navigate(['/setup/screen-saver']);
 				}
 			)
 		)

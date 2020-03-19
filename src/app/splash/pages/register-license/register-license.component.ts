@@ -21,11 +21,12 @@ export class RegisterLicenseComponent implements OnInit {
 
 	ngOnInit() {
 		this.subscription.add(
-			this._player_service.has_license().subscribe(
-				(data: HasLicense) => {
-					console.log('ngOnInithasLicense', data);
-					if(data.has_license == true && data.license != null) {
-						this._router.navigate(['/setup/getting-ready'], {queryParams: {license: data.license}});
+			this._player_service.get_license_from_db().subscribe(
+				(data: any) => {
+					console.log(data);
+					if(data[0].license_key) {
+						console.log('ngOnInithasLicense', data[0].license_key);
+						this._router.navigate(['/setup/getting-ready']);
 					} else {
 						return false;
 					}
