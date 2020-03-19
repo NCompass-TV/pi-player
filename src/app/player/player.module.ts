@@ -5,15 +5,14 @@ import { PLAYER_ROUTES } from './player.routes';
 import { LayoutComponent } from './layout/layout.component';
 import { BackgroundComponent } from './components/background/background.component';
 import { ZoneComponent } from './components/zone/zone.component';
-import { VideoPlaylistComponent } from './components/video-playlist/video-playlist.component';
-import { SlidePlaylistComponent } from './components/slide-playlist/slide-playlist.component';
-import { VideoImagePlaylistComponent } from './components/video-image-playlist/video-image-playlist.component';
+import { PlaylistPlayerComponent } from './components/playlist-player/playlist-player.component';
 
 @NgModule({
 	declarations: [
 		LayoutComponent,
 		BackgroundComponent, 
-		ZoneComponent, VideoPlaylistComponent, SlidePlaylistComponent, VideoImagePlaylistComponent
+		ZoneComponent,
+		PlaylistPlayerComponent
 	],
 
 	imports: [

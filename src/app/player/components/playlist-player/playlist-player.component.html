@@ -1,0 +1,2 @@
+<video [src]="player_current_content | async" *ngIf="playlist_content_type == 'webm'" (ended)="onVideoEnded()" autoplay muted></video>
+<img [src]="player_current_content | async" *ngIf="playlist_content_type == 'jpg' || playlist_content_type == 'png'">
