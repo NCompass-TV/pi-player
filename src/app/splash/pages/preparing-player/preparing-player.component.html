@@ -5,9 +5,12 @@
                 <ul class="message-list">
                     <li class="message-item">
                         <h1 class="setup-message" [ngClass]="showMessage ? 'fadeIn' : 'fadeOut'">
-                            <span >
+                            <span *ngIf="!is_update; else update_message">
                                 {{ setup_message[message_count] }}
                             </span>
+                            <ng-template #update_message>
+                                <span>Updating Player . . .</span>
+                            </ng-template>
                         </h1>
                     </li>
                 </ul>

@@ -6,6 +6,8 @@ import { LayoutComponent } from './layout/layout.component';
 import { BackgroundComponent } from './components/background/background.component';
 import { ZoneComponent } from './components/zone/zone.component';
 import { PlaylistPlayerComponent } from './components/playlist-player/playlist-player.component';
+import { environment } from '../../environments/environment';
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 @NgModule({
 	declarations: [

@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { PlayerService } from 'src/app/services/player.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
-import { HttpClient } from '@angular/common/http';
 import { HasLicense } from 'src/app/models/has-license.model';
 import { Subscription } from 'rxjs';
-import { PiInfo } from '../../../models/pi-info.model';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-preparing-player',
@@ -35,6 +34,7 @@ export class PreparingPlayerComponent implements OnInit {
 	download_counter: number = 0;
 	download_status: number = 0;
 	message_count = 0;
+	is_update: boolean = false;
 
 	constructor(
 		private _player_service: PlayerService,
@@ -44,10 +44,18 @@ export class PreparingPlayerComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
+		this._socket.disconnect();
+
 		// 1. Pi Player: Check if License already exist in Pi Player
 		this.subscription.add(
 			this._params.queryParams.subscribe(
 				(q: HasLicense) => {
+					console.log('Query Params', q);
+					if (q.update_player) {
+						console.log('UPDATE PLAYER')
+						this.is_update = true;
+					}
+
 					if (q.license) {
 						console.log('License already exist in this device', q)
 						console.log('#PreparingPlayerComponent says License already exists in this device: ', q.license);
@@ -68,6 +76,12 @@ export class PreparingPlayerComponent implements OnInit {
 
 		// Setup Message Array is displayed
 		this.setupMessage(7000);
+			
+		// Set New Socket for Socket Server
+		this._socket.ioSocket.io.uri = environment.pi_socket;
+
+		// Connect to Socket Server
+		this._socket.connect();
 
 		// Socket Connection to get current download progress
 		this._socket.on('content_to_download', (data) => {
@@ -85,28 +99,31 @@ export class PreparingPlayerComponent implements OnInit {
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
+		this._socket.disconnect();
 	}
 
 	
 	// Pi: Setup Display Messages
 	setupMessage(interval) {
-		this.interval = interval;
-		setInterval(() => {
-			this.showMessage = true;
-			setTimeout(() => {
-				this.showMessage = false;
-				if (!this.download_success) {
-					if (this.message_count == this.setup_message.length - 2) {
-						this.message_count = 0;
-					} else {
-						this.message_count += 1;
-					}
-				} else {
+		if (!this.is_update) {
+			this.interval = interval;
+			setInterval(() => {
+				this.showMessage = true;
+				setTimeout(() => {
 					this.showMessage = false;
-					this.message_count = this.setup_message.length - 1;
-				}
-			}, 1000);
-		}, this.interval)
+					if (!this.download_success) {
+						if (this.message_count == this.setup_message.length - 2) {
+							this.message_count = 0;
+						} else {
+							this.message_count += 1;
+						}
+					} else {
+						this.showMessage = false;
+						this.message_count = this.setup_message.length - 1;
+					}
+				}, 1000);
+			}, this.interval)
+		}
 	}
 
 

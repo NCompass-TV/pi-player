@@ -7,8 +7,9 @@ import { PlayerModule } from './player/player.module';
 import { SplashModule } from './splash/splash.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PlayerService } from './services/player.service';
-// import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
-// const config: SocketIoConfig = { url: 'http://localhost:5000', options: {} };
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { environment } from '../environments/environment';
+const config: SocketIoConfig = { url: environment.pi_socket, options: { autoConnect: false } };
 
 @NgModule({
 	declarations: [
@@ -22,6 +23,7 @@ import { PlayerService } from './services/player.service';
 		AppRoutingModule,
 		FormsModule,
 		ReactiveFormsModule,
+		SocketIoModule.forRoot(config),
 	],
 	providers: [
 		PlayerService

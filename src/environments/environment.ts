@@ -13,5 +13,9 @@ export const environment = {
   selectTemplate: '/select_data/template',
   saveDataAndDownload: '/select_data/content',
   clearDatabase: '/select_data/content/cleardb',
-  hasLicense: '/select_data/content/has-license'
+  hasLicense: '/select_data/content/has-license',
+
+  // Socket Server
+  socket_server: 'http://192.168.100.13:3000',
+  pi_socket: 'http://localhost:3215'
 };
