@@ -16,6 +16,7 @@ export const environment = {
   hasLicense: '/select_data/content/has-license',
   saveLicensetoDb: '/license/save-license',
   getLicenseFromDb: '/license/get-license',
+  resetPlayer: '/select_data/content/reset',
 
   // Socket Server
   socket_server: 'http://192.168.100.13:3000',

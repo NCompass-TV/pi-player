@@ -3,6 +3,7 @@ import { Subscription, Observable, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { PlayerService } from '../../../services/player.service';
 import { Content } from '../../../models/content.model';
+import { VIDEO_FILETYPE, IMAGE_FILETYPE } from  '../../../models/filetype';
 
 @Component({
 	selector: 'app-playlist-player',
@@ -21,7 +22,6 @@ export class PlaylistPlayerComponent implements OnInit {
 	slide_duration: number = 8000;
 
 	public_url: string = `${environment.public_url}/assets`
-
 	subscription: Subscription = new Subscription;
 
 	constructor(
@@ -32,7 +32,13 @@ export class PlaylistPlayerComponent implements OnInit {
 		this.subscription.add(
 			this._player.get_playlist_sequence(this.playlist_id).subscribe(
 				(data: Content[]) => {
-					this.player_playlist_content = data;
+					const sorted_playlist = data.sort(
+						(a, b) => {
+							return a.sequence - b.sequence;
+						}
+					)
+					// console.log('Playlist: ', this.playlist_id, 'Content', sorted_playlist);
+					this.player_playlist_content = sorted_playlist;
 					this.checkFileType(this.sequence_count);
 				}
 			)
@@ -45,9 +51,9 @@ export class PlaylistPlayerComponent implements OnInit {
 
 	// Check File Type and Play Display Content Accordingly
 	checkFileType(i) {
-		if (this.fileType(i) == 'webm') {
+		if (this.fileType(i) in VIDEO_FILETYPE) {
 			this.displayVideo(this.fileUrl(i), this.fileType(i));
-		} else if (this.fileType(i) == 'jpg' || this.fileType(i) == 'png') {
+		} else if (this.fileType(i) in IMAGE_FILETYPE) {
 			this.displayImage(this.fileUrl(i), this.fileType(i))
 		}
 	}
@@ -88,12 +94,12 @@ export class PlaylistPlayerComponent implements OnInit {
 		if (this.sequence_count++ != this.player_playlist_content.length - 1) {
 			setTimeout(() => {
 				this.checkFileType(this.sequence_count);
-			}, 1000);
+			}, 500);
 		} else {
 			this.sequence_count = 0;
 			setTimeout(() => {
 				this.checkFileType(this.sequence_count);
-			}, 1000)
+			}, 500)
 		}
 		return true;
 	}

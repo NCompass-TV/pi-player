@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PreparingPlayerComponent } from './pages/preparing-player/preparing-player.component';
 import { UnactivatedComponent } from './pages/unactivated/unactivated.component';
 import { LoaderComponent } from './components/loader/loader.component';
+import { ResetPiComponent } from './pages/reset-pi/reset-pi.component';
 
 @NgModule({
 	declarations: [
@@ -19,7 +20,8 @@ import { LoaderComponent } from './components/loader/loader.component';
 		ProgressBarComponent, 
 		PreparingPlayerComponent,
 		UnactivatedComponent,
-		LoaderComponent
+		LoaderComponent,
+		ResetPiComponent
 	],
 
 	imports: [

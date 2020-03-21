@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { PlayerService } from '../../../services/player.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { PiInfo } from 'src/app/models/pi-info.model';
+import { PlayerService } from '../../../services/player.service';
+import { PiInfo } from '../../../models/pi-info.model';
+import { License } from '../../../models/license.model';
 
 @Component({
 	selector: 'app-license-form',
@@ -102,7 +103,7 @@ export class LicenseFormComponent implements OnInit {
 	registerLicense(license_info) {
 		this.subscription.add(
 			this._player_service.register_license(license_info).subscribe(
-				data => {
+				(data: License) => {
 					if(data.message) {
 						console.log('#LicenseFormComponent - registerLicense() - Error:', data.message);
 						this.is_submitted = false;
@@ -112,7 +113,8 @@ export class LicenseFormComponent implements OnInit {
 						this._router.navigate(['/setup/screen-saver']);
 					} else {
 						console.log('#LicenseFormComponent - registerLicense() - Success:', data);
-						localStorage.setItem('license_key', this.f.license.value);
+						localStorage.setItem('license_id', data.licenseId);
+						localStorage.setItem('license_key', data.licenseKey);
 						this._router.navigate(['/setup/getting-ready']);
 					}
 				}, 

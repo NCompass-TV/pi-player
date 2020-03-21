@@ -140,3 +140,40 @@ input, button {
         }
     }
 }
+
+
+// Preparing Pi
+.form-group {
+    position: relative;
+}
+
+.error-message {
+    background-color: rgb(228, 58, 67);
+    border-radius: 5px;
+    color: #fff;
+    font-size: 10px;
+    padding: 5px 15px;
+    position: absolute;
+    right: 0;
+    top: 10px;
+}
+
+.getting-ready {
+    height: 100vh;
+    text-align: center;
+}
+
+.sm-text {
+    color: rgb(44, 44, 44);
+    font-size: 13px;
+    font-weight: bold;
+    margin: 10px 0;
+    text-align: left;
+}
+
+.percent_count {
+    color: #64961f;
+    display: inline-block;
+    font-size: 15px;
+    margin-left: 5px;
+}

@@ -63,13 +63,17 @@ export class PlayerService {
 		return this.http.get('http://worldtimeapi.org/api/ip');
 	}
 
+	// Get License from DB
+	get_license_from_db() {
+		return this.http.get(`${environment.public_url}${environment.getLicenseFromDb}`);
+	}
+
 	// Save License To DB
 	save_license_to_db(license_data) {
 		return this.http.post(`${environment.public_url}${environment.saveLicensetoDb}`, license_data);
 	}
-
-	// Get License from DB
-	get_license_from_db() {
-		return this.http.get(`${environment.public_url}${environment.getLicenseFromDb}`);
+	
+	reset_player() {
+		return this.http.get(`${environment.public_url}${environment.resetPlayer}`);
 	}
 }

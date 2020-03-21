@@ -9,11 +9,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PlayerService } from './services/player.service';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { environment } from '../environments/environment';
+import { IsImagePipe } from './pipes/is-image.pipe';
 const config: SocketIoConfig = { url: environment.pi_socket, options: { autoConnect: false } };
 
 @NgModule({
 	declarations: [
-		AppComponent
+		AppComponent,
+		IsImagePipe
 	],
 	imports: [
 		BrowserModule,

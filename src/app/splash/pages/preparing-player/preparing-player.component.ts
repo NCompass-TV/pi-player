@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { PlayerService } from 'src/app/services/player.service';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
-import { HasLicense } from 'src/app/models/has-license.model';
 import { Subscription } from 'rxjs';
+import { PlayerService } from '../../../services/player.service';
+import { Router, ActivatedRoute } from '@angular/router';
 import { environment } from '../../../../environments/environment';
+import { License } from '../../../models/license.model';
 
 @Component({
   selector: 'app-preparing-player',
@@ -13,6 +13,7 @@ import { environment } from '../../../../environments/environment';
 })
 export class PreparingPlayerComponent implements OnInit {
 
+	license_id: string = localStorage.getItem('license_id');
 	license_key: string = localStorage.getItem('license_key');
 
 	setup_message = [
@@ -29,12 +30,12 @@ export class PreparingPlayerComponent implements OnInit {
 	has_license: boolean = false;
 	has_license_key: string;
 	download_success: boolean = false;
-	interval: number;
 	content_count: number = 0;
 	download_counter: number = 0;
 	download_status: number = 0;
 	message_count = 0;
 	is_update: boolean = false;
+	is_reset: boolean = false;
 
 	constructor(
 		private _player_service: PlayerService,
@@ -49,18 +50,35 @@ export class PreparingPlayerComponent implements OnInit {
 		// 1. Pi Player: Check if License already exist in Pi Player
 		this.subscription.add(
 			this._player_service.get_license_from_db().subscribe(
-				(data: any) => {
-					console.log('License Saved', data)
-					if (data.license_key) {
-						// Update
-						this.clearDatabase(true, null);
+				(data: any[]) => {
+					console.log(data);
+					if (data.length != 0) {
+						data.forEach(l => {
+							if (l.license_key) {
+								// Update
+								console.log('APPLYING UPDATE');
+								this.clearDatabase(true, l.license_id, l.license_key);
+							}
+						});
 					} else {
 						// Fresh Install
-						this.clearDatabase(false, this.license_key)
+						console.log('FRESH INSTALLATION');
+						this.clearDatabase(false, this.license_id, this.license_key)
 					}
 				},
 				error => {
 					console.log(error);
+				}
+			)
+		)
+
+		this.subscription.add(
+			this._params.queryParamMap.subscribe(
+				data => {
+					if(data.get('update_player')) {
+						this.setup_message = ['Updating Player . . .'];
+						this.is_update = true;
+					}
 				}
 			)
 		)
@@ -96,7 +114,6 @@ export class PreparingPlayerComponent implements OnInit {
 	// Pi: Setup Display Messages
 	setupMessage(interval) {
 		if (!this.is_update) {
-			this.interval = interval;
 			setInterval(() => {
 				this.showMessage = true;
 				setTimeout(() => {
@@ -112,22 +129,25 @@ export class PreparingPlayerComponent implements OnInit {
 						this.message_count = this.setup_message.length - 1;
 					}
 				}, 1000);
-			}, this.interval)
+			}, interval)
 		}
 	}
 
 
 	// 2. Pi: Clear Pi Player's SQLite Database
-	clearDatabase(has_license: boolean, license_key: string) {
+	clearDatabase(has_license: boolean, id: string, key: string) {
 		this.subscription.add(
 			this._player_service.clear_database().subscribe(
 				data => {
 					console.log('#PreparingPlayerComponent - clearDatabase() - Success: ', data);
-					if(!has_license) {
-						// this.saveLicense();
-						this.saveLicenseToDb(license_key);
+					if(has_license) {
+						// Push Update
+							localStorage.setItem('license_id', id)
+							localStorage.setItem('license_key', key);
+							this.getPlayerContent(key);
 					} else {
-						this.getPlayerContent(this.has_license_key);
+						// Fresh install
+						this.saveLicenseToDb(this.license_id, this.license_key);
 					}
 				}, 
 				error => {
@@ -140,8 +160,11 @@ export class PreparingPlayerComponent implements OnInit {
 
 	
 	// 3. Pi: Save Entered License to Pi
-	saveLicenseToDb(data) {
-		const license = { license_key: data };
+	saveLicenseToDb(id, key) {
+		const license = { 
+			license_id: id,
+			license_key: key 
+		};
 		this.subscription.add(
 			this._player_service.save_license_to_db(license).subscribe(
 				data => {
@@ -149,7 +172,7 @@ export class PreparingPlayerComponent implements OnInit {
 					this.getPlayerContent(this.license_key);
 				},
 				error => {
-					console.log(error);
+					console.log('License Not Saved', error);
 					this._router.navigate(['/setup/screen-saver']);
 				}
 			)
