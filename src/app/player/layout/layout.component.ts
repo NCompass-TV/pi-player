@@ -46,19 +46,15 @@ export class LayoutComponent implements OnInit {
 		this._socket.on('launch_update', (data) => {
 			console.log('Launch Update', data);
 			if (data === this.license_id) {
-				this._socket.disconnect();
 				this._router.navigate(['/setup/getting-ready'], { queryParams: { update_player: true } });
-			} else {
 				this._socket.disconnect();
 			}
 		})
 
 		this._socket.on('launch_reset', (data) => {
-			console.log('Launch Update', data);
+			console.log('Launch Reset', data);
 			if (data === this.license_id) {
-				this._socket.disconnect();
 				this._router.navigate(['/setup/reset-pi']);
-			} else {
 				this._socket.disconnect();
 			}
 		})

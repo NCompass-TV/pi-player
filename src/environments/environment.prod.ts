@@ -1,7 +1,7 @@
 export const environment = {
     production: false,
     // DotNet Server
-    server_url: 'http://44.192.0.172:82/api/',
+    server_url: 'http://44.192.0.172:92/api/',
     piDownloader: 'pidownloader/getcontents?licensekey=',
     registerLicense: 'license/register',
 
@@ -16,8 +16,9 @@ export const environment = {
     hasLicense: '/select_data/content/has-license',
     saveLicensetoDb: '/license/save-license',
     getLicenseFromDb: '/license/get-license',
+    resetPlayer: '/select_data/content/reset',
 
     // Socket Server
-    socket_server: 'http://192.168.100.13:3000',
+    socket_server: 'http://44.192.0.172:3000',
     pi_socket: 'http://localhost:3215'
 };

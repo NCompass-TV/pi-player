@@ -19,6 +19,6 @@ export const environment = {
   resetPlayer: '/select_data/content/reset',
 
   // Socket Server
-  socket_server: 'http://192.168.100.13:3000',
+  socket_server: 'http://44.192.0.172:3000',
   pi_socket: 'http://localhost:3215'
 };

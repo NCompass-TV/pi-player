@@ -6,6 +6,8 @@ import { LayoutComponent } from './layout/layout.component';
 import { BackgroundComponent } from './components/background/background.component';
 import { ZoneComponent } from './components/zone/zone.component';
 import { PlaylistPlayerComponent } from './components/playlist-player/playlist-player.component';
+import { IsImagePipe } from '../pipes/is-image.pipe';
+import { IsVideoPipe } from '../pipes/is-video.pipe';
 import { environment } from '../../environments/environment';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
@@ -14,7 +16,9 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 		LayoutComponent,
 		BackgroundComponent, 
 		ZoneComponent,
-		PlaylistPlayerComponent
+		PlaylistPlayerComponent,
+		IsVideoPipe,
+		IsImagePipe
 	],
 
 	imports: [
@@ -25,7 +29,9 @@ import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 	exports: [
 		LayoutComponent,
 		BackgroundComponent, 
-		ZoneComponent
+		ZoneComponent,
+		IsVideoPipe,
+		IsImagePipe
 	]
 })
 

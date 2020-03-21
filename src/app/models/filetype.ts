@@ -1,4 +1,4 @@
-export enum  VIDEO_FILETYPE {
+export enum VIDEO_FILETYPE {
     webm = 1
 }
 

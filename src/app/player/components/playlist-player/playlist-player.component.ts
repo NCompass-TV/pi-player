@@ -54,6 +54,7 @@ export class PlaylistPlayerComponent implements OnInit {
 		if (this.fileType(i) in VIDEO_FILETYPE) {
 			this.displayVideo(this.fileUrl(i), this.fileType(i));
 		} else if (this.fileType(i) in IMAGE_FILETYPE) {
+			// console.log('Filetype', this.fileType(i));
 			this.displayImage(this.fileUrl(i), this.fileType(i))
 		}
 	}
