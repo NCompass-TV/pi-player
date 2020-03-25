@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { PlayerService } from '../../../services/player.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { PlayerService } from '../../../services/player.service';
+import { PiInfo } from '../../../models/pi-info.model';
+import { License } from '../../../models/license.model';
 
 @Component({
 	selector: 'app-license-form',
@@ -11,6 +14,9 @@ import { Router } from '@angular/router';
 
 export class LicenseFormComponent implements OnInit {
 
+	subscription: Subscription = new Subscription;
+
+	is_disabled: boolean = true;
 	is_submitted: boolean = false;
 	internal_server: boolean = false;
 	server_error: string;
@@ -20,38 +26,45 @@ export class LicenseFormComponent implements OnInit {
 	register_license_form: FormGroup;
 	
 	constructor(
-		private playerService: PlayerService,
-		private formBuilder: FormBuilder,
-		private router: Router
+		private _player_service: PlayerService,
+		private _form: FormBuilder,
+		private _router: Router
 	) {}
-
+	
 	ngOnInit() {
-		this.register_license_form = this.formBuilder.group(
+		this.register_license_form = this._form.group(
 			{
 				license: ['', Validators.required]
 			}
 		)
+
+		this.subscription.add(
+			this.register_license_form.valueChanges.subscribe(
+				data => {
+					if (this.register_license_form.valid) {
+						this.is_disabled = false;
+					} else {
+						this.is_disabled = true;
+					}
+				}
+			)
+		)
+	}
+
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
 	}
 
 	// Convenience getter for easy access to form fields
-	get f() { return this.register_license_form.controls; }
+	get f() { 
+		return this.register_license_form.controls; 
+	}
 
+	// 1. On Enter License Form Submit, Check if form is valid
 	onSubmit() {
 		if (this.f.license.value != '') {
 			this.is_submitted = true;
-			this.playerService.clearDatabase().subscribe(
-				(data: any) => {
-					if(data.message) {
-						this.internal_server = true;
-					} else {
-						console.log('cleardb', data, data.message);
-						this.getDeviceInfo();
-					}
-				}, 
-				error => {
-					console.log(error);
-				}
-			)
+			this.getDeviceInfo();
 		} else {
 			setTimeout(() => {
 				this.is_submitted = false;
@@ -59,47 +72,57 @@ export class LicenseFormComponent implements OnInit {
 		}
 	}
 
+	// 2. Pi: Get Pi Player System Info -> This is required and included on registerLicense(license_key)
 	getDeviceInfo() {
-		this.playerService.getDeviceInfo().subscribe(
-			data => {
-				this.pi_info = {
-					licensekey: this.f.license.value,
-					macaddress: data.macaddress,
-					memory: data.memory,
-					internettype: data.internettype,
-					internetspeed: data.internetspeed,
-					totalstorage: data.storage.total,
-					freestorage: `${100 - data.storage.used} %`
+		this.subscription.add(
+			this._player_service.get_pi_info().subscribe(
+				data => {
+					this.registerLicense(this.mapPiSystemnInfo(data));
+				},
+				error => {
+					console.log(error);
 				}
-				this.registerLicense(this.pi_info);
-				localStorage.setItem("license_key", this.f.license.value);
-			},
-			error => {
-				console.log(error);
-			}
+			)
 		)
 	}
 
-	registerLicense(data) {
-		console.log('#registerLicense', data);
-		this.playerService.registerLicense(data).subscribe(
-			data => {
-				console.log('#registerLicense_data', data);
-				if (data.isActivated == 1) {
-					console.log('License is Activated, redirecting...');
-					this.router.navigate(['/setup/getting-ready']);
-				} else {
-					this.router.navigate(['/setup/screen-saver']);
+	// 3. Pi: Map Pi System Info to format data
+	mapPiSystemnInfo(pi) {
+		return new PiInfo (
+			this.f.license.value,
+			pi.macaddress,
+			pi.memory,
+			pi.internettype,
+			pi.internetspeed,
+			pi.storage.total,
+			`${100 - pi.storage.used} %`
+		)
+	}
+
+	// 4. Dashboard Server: Check if License Exist in Server then save
+	registerLicense(license_info) {
+		this.subscription.add(
+			this._player_service.register_license(license_info).subscribe(
+				(data: License) => {
+					if(data.message) {
+						console.log('#LicenseFormComponent - registerLicense() - Error:', data.message);
+						this.is_submitted = false;
+						this.internal_server = true;
+						this.server_error = data.message;
+						// Must add redirection to License Does Not Exist Page...
+						this._router.navigate(['/setup/screen-saver']);
+					} else {
+						console.log('#LicenseFormComponent - registerLicense() - Success:', data);
+						localStorage.setItem('license_id', data.licenseId);
+						localStorage.setItem('license_key', data.licenseKey);
+						this._router.navigate(['/setup/getting-ready']);
+					}
+				}, 
+				error => {
+					// Must add redirection to Fatal Error Page...
+					console.log('#LicenseFormComponent - registerLicense() - Fatal Error:', error);
 				}
-			},
-			error => {
-				console.log('#registerLicense', error);
-				this.server_error = error.error;
-				this.internal_server = true;
-				setTimeout(() => {
-					this.internal_server = false;
-				}, 5000);
-			}
+			)
 		)
 	}
 }

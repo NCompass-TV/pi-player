@@ -12,11 +12,11 @@
 					<div class="error-message" *ngIf="is_submitted && f.license.errors">
 						<span *ngIf="f.license.errors.required">License is required</span>
 					</div>
-					<div class="error-message server-message" *ngIf="is_submitted && internal_server">
+					<div class="error-message server-message" *ngIf="internal_server">
 						<span>{{ server_error }}</span>
 					</div>
 				</div>
-				<button class="button" type="submit">Register License</button>
+				<button class="button" type="submit" [disabled]="is_disabled">Register License</button>
 			</form>
 		</div>
 		

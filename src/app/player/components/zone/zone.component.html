@@ -1,24 +1,9 @@
 <div class="zone zone-bg" 
-    [ngStyle]="{
-    'background': zone_background,
-    'width.px': zone_width, 
-    'height.px': zone_height, 
-    'left.px': zone_pos_x, 
-    'top.px': zone_pos_y}">
-
-    <!-- Video Playlist -->
-    <div *ngIf="zone_playlist_type == videos" class="h-100">
-        <app-video-playlist
-        [playlist_id]="zone_playlist_id">
-        </app-video-playlist
-        >
-    </div>
-
-    <!-- Image Slide Playlist -->
-    <div *ngIf="zone_playlist_type == slides"  class="h-100">
-        <app-slide-playlist
-        [playlist_id]="zone_playlist_id">
-        </app-slide-playlist>
-    </div>
-
+[ngStyle]="{
+'background': zone_background,
+'width.px': zone_width, 
+'height.px': zone_height, 
+'left.px': zone_pos_x, 
+'top.px': zone_pos_y}">
+    <app-playlist-player [playlist_id]="zone_playlist_id"></app-playlist-player>
 </div>

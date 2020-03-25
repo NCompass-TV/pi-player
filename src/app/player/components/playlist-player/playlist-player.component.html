@@ -1,0 +1,3 @@
+<video [src]="player_current_content | async" *ngIf="playlist_content_type | isVideo" (ended)="onVideoEnded()" autoplay [muted]="true"></video>
+
+<img [src]="player_current_content | async" *ngIf="playlist_content_type | isImage">

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SlidePlaylistComponent } from './slide-playlist.component';
+import { ResetPiComponent } from './reset-pi.component';
 
-describe('SlidePlaylistComponent', () => {
-  let component: SlidePlaylistComponent;
-  let fixture: ComponentFixture<SlidePlaylistComponent>;
+describe('ResetPiComponent', () => {
+  let component: ResetPiComponent;
+  let fixture: ComponentFixture<ResetPiComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ SlidePlaylistComponent ]
+      declarations: [ ResetPiComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SlidePlaylistComponent);
+    fixture = TestBed.createComponent(ResetPiComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -9,9 +9,8 @@ import { ProgressBarComponent } from './components/progress-bar/progress-bar.com
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PreparingPlayerComponent } from './pages/preparing-player/preparing-player.component';
 import { UnactivatedComponent } from './pages/unactivated/unactivated.component';
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { LoaderComponent } from './components/loader/loader.component';
-const config: SocketIoConfig = { url: 'http://localhost:3215', options: {} };
+import { ResetPiComponent } from './pages/reset-pi/reset-pi.component';
 
 @NgModule({
 	declarations: [
@@ -21,11 +20,11 @@ const config: SocketIoConfig = { url: 'http://localhost:3215', options: {} };
 		ProgressBarComponent, 
 		PreparingPlayerComponent,
 		UnactivatedComponent,
-		LoaderComponent
+		LoaderComponent,
+		ResetPiComponent
 	],
 
 	imports: [
-		SocketIoModule.forRoot(config),
 		CommonModule,
 		FormsModule,
         ReactiveFormsModule,

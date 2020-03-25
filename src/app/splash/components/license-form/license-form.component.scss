@@ -5,15 +5,15 @@
 .error-message {
     animation: shake 0.5s;
     background-color: rgb(228, 58, 67);
-    border-radius: 100px;
+    border-radius: 5px;
     color: #fff;
     font-size: 10px;
     font-weight: bold;
     letter-spacing: 0.5px;
-    padding: 5px 10px;
+    padding: 5px 20px;
     position: absolute;
     right: 0;
-    top: 10px;
+    top: 15px;
 }
 
 @keyframes shake {

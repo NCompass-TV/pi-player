@@ -53,29 +53,37 @@ input, button {
     .button {
         background: #64961f;
         border: 0;
-        border-radius: 100px;
+        border-radius: 5px;
         color: #ffffff;
         cursor: pointer;
-        font-size: 17px;
+        font-size: 14px;
+        font-weight: 500;
         outline: none;
-        padding: 10px 30px;
+        letter-spacing: 1px;
+        padding: 15px 30px;
         transition: 0.2s linear;
+        text-transform: uppercase;
         &:hover {
             background: #8ec641;
+        }
+
+        &:disabled {
+            background-color: #bbb;
+            cursor: no-drop;
         }
     }
 
     .input-field {
         border: 0;
-        border-bottom: 3px solid #808080;
-        font-size: 21px;
+        border-bottom: 2px solid #808080;
+        font-size: 20px;
         height: 60px;
-        margin-bottom: 50px;
+        margin-bottom: 40px;
         transition: 0.2s linear;
         width: 100%;
         &:focus {
             outline: none;
-            border-bottom: 3px solid #333;
+            border-bottom: 2px solid #64961f;
         }
     }
 }
@@ -107,28 +115,65 @@ input, button {
         list-style: none;
         margin: 0;
         padding: 0;
+    }
 
-        .message-item {
-            display: none;
-            height: 100px;
-            width: 100%;
-            &:first-child {
-                display: block;
-            }
-
-            .setup-message {
-                color: #555;
-                font : {
-                    size: 40px; 
-                    weight: 300;
-                }
-                opacity: 1;
-                transition: all 0.5s cubic-bezier(.25,.8,.25,1);
-
-                &.fadeIn {
-                    opacity: 0;
-                }
-            }
+    .message-item {
+        display: none;
+        height: 100px;
+        width: 100%;
+        &:first-child {
+            display: block;
         }
     }
+
+    .setup-message {
+        color: #555;
+        font : {
+            size: 40px; 
+            weight: 300;
+        }
+        opacity: 1;
+        transition: all 0.5s cubic-bezier(.25,.8,.25,1);
+
+        &.fadeIn {
+            opacity: 0;
+        }
+    }
+}
+
+
+// Preparing Pi
+.form-group {
+    position: relative;
+}
+
+.error-message {
+    background-color: rgb(228, 58, 67);
+    border-radius: 5px;
+    color: #fff;
+    font-size: 10px;
+    padding: 5px 15px;
+    position: absolute;
+    right: 0;
+    top: 10px;
+}
+
+.getting-ready {
+    height: 100vh;
+    text-align: center;
+}
+
+.sm-text {
+    color: rgb(44, 44, 44);
+    font-size: 13px;
+    font-weight: bold;
+    margin: 10px 0;
+    text-align: left;
+}
+
+.percent_count {
+    color: #64961f;
+    display: inline-block;
+    font-size: 15px;
+    margin-left: 5px;
 }
