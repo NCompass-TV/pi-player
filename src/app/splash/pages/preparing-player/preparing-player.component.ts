@@ -45,8 +45,6 @@ export class PreparingPlayerComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-		this._socket.disconnect();
-
 		// 1. Pi Player: Check if License already exist in Pi Player
 		this.subscription.add(
 			this._player_service.get_license_from_db().subscribe(
@@ -90,15 +88,17 @@ export class PreparingPlayerComponent implements OnInit {
 		this._socket.ioSocket.io.uri = environment.pi_socket;
 
 		// Connect to Socket Server
-		this._socket.connect();
+		// this._socket.connect();
 
 		// Socket Connection to get current download progress
 		this._socket.on('content_to_download', (data) => {
+			console.log('SOCKET: CONTENT TO DOWNLOAD')
 			this.content_count = data;
 		})
 
 		// Socket Connection to check if contents are downloaded successfully
 		this._socket.on('downloaded_content', (data) => {
+			console.log('SOCKET: DOWNLOADED CONTENT')
 			this.download_counter = data;
 			this.download_status = (this.download_counter/this.content_count) * 100;
 			this.downloadProgressChecker();
@@ -187,6 +187,7 @@ export class PreparingPlayerComponent implements OnInit {
 				data => {
 					console.log('#PreparingPlayerComponent - getPlayerContent() - Success: ', data);
 					if(data.message) {
+						console.log('PUTRAGIS:', data.message, license_key)
 						this._router.navigate(['/setup/screen-saver']);
 					} else {
 						this.savePlayerContent(data);
@@ -220,6 +221,7 @@ export class PreparingPlayerComponent implements OnInit {
 
 	// 6. Pi: Download Media Files to Pi Player
 	downloadPlayerAssets() {
+		this._socket.connect();
 		this.subscription.add(
 			this._player_service.download_player_content().subscribe(
 				data => {
