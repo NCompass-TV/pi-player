@@ -4,6 +4,8 @@
 'width.px': zone_width, 
 'height.px': zone_height, 
 'left.px': zone_pos_x, 
-'top.px': zone_pos_y}">
-    <app-playlist-player [playlist_id]="zone_playlist_id"></app-playlist-player>
+'top.px': zone_pos_y}" 
+[ngClass]="is_fullscreen ? 'fullscreen' : ''">
+    <app-playlist-player [playlist_id]="zone_playlist_id" 
+    (is_fullscreen)="setToFullscreen($event)"></app-playlist-player>
 </div>
