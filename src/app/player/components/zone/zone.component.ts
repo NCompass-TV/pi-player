@@ -22,6 +22,7 @@ export class ZoneComponent implements OnInit {
 	@Input() zone_pos_y: string;
 	@Input() zone_playlist_id: string;
 	@Input() zone_playlist_type: string;
+	is_fullscreen: boolean;
 	
 	// Internal
 	playlist_type$: Observable<PlaylistTypeModel[]>;
@@ -36,5 +37,10 @@ export class ZoneComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
+	}
+
+	setToFullscreen(e) {
+		console.log('fullscreen_', e);
+		this.is_fullscreen = e;
 	}
 }
