@@ -88,7 +88,7 @@ export class PreparingPlayerComponent implements OnInit {
 		this._socket.ioSocket.io.uri = environment.pi_socket;
 
 		// Connect to Socket Server
-		// this._socket.connect();
+		this._socket.connect();
 
 		// Socket Connection to get current download progress
 		this._socket.on('content_to_download', (data) => {

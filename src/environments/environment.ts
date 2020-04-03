@@ -20,6 +20,6 @@ export const environment = {
   screenshot: '/utils/screenshot',
 
   // Socket Server
-  socket_server: 'http://192.168.100.8:3000',
+  socket_server: 'http://192.168.100.13:3000',
   pi_socket: 'http://localhost:3215'
 };
