@@ -32,8 +32,4 @@ const config: SocketIoConfig = { url: environment.pi_socket, options: { autoConn
 })
 
 export class AppModule { 
-
-	on(restart_ka_daw) {
-		
-	}
 }

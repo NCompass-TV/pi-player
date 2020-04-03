@@ -17,8 +17,9 @@ export const environment = {
   saveLicensetoDb: '/license/save-license',
   getLicenseFromDb: '/license/get-license',
   resetPlayer: '/select_data/content/reset',
+  screenshot: '/utils/screenshot',
 
   // Socket Server
-  socket_server: 'http://44.192.0.172:3000',
+  socket_server: 'http://192.168.100.8:3000',
   pi_socket: 'http://localhost:3215'
 };

@@ -73,7 +73,12 @@ export class PlayerService {
 		return this.http.post(`${environment.public_url}${environment.saveLicensetoDb}`, license_data);
 	}
 	
+	//
 	reset_player() {
 		return this.http.get(`${environment.public_url}${environment.resetPlayer}`);
+	}
+
+	screenShot_player() {
+		return this.http.get(`${environment.public_url}${environment.screenshot}`);
 	}
 }

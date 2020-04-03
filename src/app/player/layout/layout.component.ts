@@ -47,7 +47,7 @@ export class LayoutComponent implements OnInit {
 			console.log('Launch Update', data);
 			if (data === this.license_id) {
 				this._router.navigate(['/setup/getting-ready'], { queryParams: { update_player: true } });
-				this._socket.disconnect();
+				//this._socket.disconnect();
 			}
 		})
 
@@ -55,7 +55,16 @@ export class LayoutComponent implements OnInit {
 			console.log('Launch Reset', data);
 			if (data === this.license_id) {
 				this._router.navigate(['/setup/reset-pi']);
-				this._socket.disconnect();
+				//this._socket.disconnect();
+			}
+		})
+
+		this._socket.on('launch_screenshot', (data) => {
+			console.log('Launch Screenshot', data);
+			if (data === this.license_id) {
+				this._player.screenShot_player().subscribe(
+					data => console.log(data)
+				)
 			}
 		})
 	}
