@@ -54,6 +54,8 @@ export class LayoutComponent implements OnInit {
 			console.log('Status Check Event', data);
 			if (data === this.license_id) {
 				this._socket.emit('pi_is_online', data);
+			} else {
+				console.log()
 			}
 		})
 

@@ -187,7 +187,6 @@ export class PreparingPlayerComponent implements OnInit {
 				data => {
 					console.log('#PreparingPlayerComponent - getPlayerContent() - Success: ', data);
 					if(data.message) {
-						console.log('PUTRAGIS:', data.message, license_key)
 						this._router.navigate(['/setup/screen-saver']);
 					} else {
 						this.savePlayerContent(data);
