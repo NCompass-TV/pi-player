@@ -1,10 +1,10 @@
 export const environment = {
   production: false,
   // DotNet Server
-  server_url: 'http://44.192.0.172:92/api/',
+  server_url: 'http://3.212.225.229:72/api/',
   piDownloader: 'pidownloader/getcontents?licensekey=',
   registerLicense: 'license/register',
-
+  
   // Nodejs Server
   public_url: 'http://localhost:3215',
   systemInfo: '/systeminfo',
@@ -20,7 +20,6 @@ export const environment = {
   screenshot: '/utils/screenshot',
 
   // Socket Server
-  socket_server: 'http://44.192.0.172:83',
-  // socket_server: 'http://192.168.100.8:3000',
+  socket_server: 'http://3.212.225.229:73',
   pi_socket: 'http://localhost:3215'
 };

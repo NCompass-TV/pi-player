@@ -45,7 +45,35 @@ export class PreparingPlayerComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
-		// 1. Pi Player: Check if License already exist in Pi Player
+		// Pi Player: Check if License already exist in Pi Player
+		this.licenseExists();
+
+		// If attempting an update on player content
+		this.updatePlayer();
+
+		// Setup Message Array is displayed
+		this.setupMessage(7000);
+			
+		// Set New Socket for Socket Server
+		this._socket.ioSocket.io.uri = environment.pi_socket;
+
+		// Connect to Socket Server
+		this._socket.connect();
+
+		// Socket Connection to get current download progress
+		this.socket_contentToDownload();
+
+		// Socket Connection to check if contents are downloaded successfully
+		this.socket_downloadedContent();
+	}
+
+
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
+		this._socket.disconnect();
+	}
+
+	licenseExists() {
 		this.subscription.add(
 			this._player_service.get_license_from_db().subscribe(
 				(data: any[]) => {
@@ -59,8 +87,6 @@ export class PreparingPlayerComponent implements OnInit {
 							}
 						});
 					} else {
-						// Fresh Install
-						console.log('FRESH INSTALLATION');
 						this.clearDatabase(false, this.license_id, this.license_key)
 					}
 				},
@@ -69,7 +95,9 @@ export class PreparingPlayerComponent implements OnInit {
 				}
 			)
 		)
+	}
 
+	updatePlayer() {
 		this.subscription.add(
 			this._params.queryParamMap.subscribe(
 				data => {
@@ -80,35 +108,22 @@ export class PreparingPlayerComponent implements OnInit {
 				}
 			)
 		)
+	}
 
-		// Setup Message Array is displayed
-		this.setupMessage(7000);
-			
-		// Set New Socket for Socket Server
-		this._socket.ioSocket.io.uri = environment.pi_socket;
-
-		// Connect to Socket Server
-		this._socket.connect();
-
-		// Socket Connection to get current download progress
+	socket_contentToDownload() {
 		this._socket.on('content_to_download', (data) => {
 			console.log('SOCKET: CONTENT TO DOWNLOAD')
 			this.content_count = data;
 		})
+	}
 
-		// Socket Connection to check if contents are downloaded successfully
+	socket_downloadedContent() {
 		this._socket.on('downloaded_content', (data) => {
 			console.log('SOCKET: DOWNLOADED CONTENT')
 			this.download_counter = data;
 			this.download_status = (this.download_counter/this.content_count) * 100;
 			this.downloadProgressChecker();
 		})
-	}
-
-
-	ngOnDestroy() {
-		this.subscription.unsubscribe();
-		this._socket.disconnect();
 	}
 
 	// Pi: Setup Display Messages
@@ -242,7 +257,10 @@ export class PreparingPlayerComponent implements OnInit {
 			this.download_success = true;
 			this.setupMessage(12000);
 			setTimeout(() => {
-				this._router.navigate(['/player']);
+				this._router.navigate(['/player']).then(() => {
+					// HOTFIX: Reload page destination to Destroy previous socket sessions
+					window.location.reload();
+				});
 			}, 10000)
 		}
 	}
