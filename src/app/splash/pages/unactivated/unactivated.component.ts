@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Socket } from 'ngx-socket-io';
 import { Router } from '@angular/router';
+import { Socket } from 'ngx-socket-io';
+import { Subscription } from 'rxjs';
 import { PlayerService } from '../../../services/player.service';
 
 @Component({
@@ -11,9 +12,13 @@ import { PlayerService } from '../../../services/player.service';
 
 export class UnactivatedComponent implements OnInit {
 
+	day_status: string;
+	day_greeting: string;
 	license_id: string = localStorage.getItem('license_id');
+	license_key: string = localStorage.getItem('license_key');
+	subscription = new Subscription;
 	time = new Date();
-  	timer;
+	timer: any;
 
 	constructor(
 		private _player: PlayerService,
@@ -24,8 +29,6 @@ export class UnactivatedComponent implements OnInit {
 	ngOnInit() {
 		// Get and Set Timer Screensaver
 		this.getTimeDate();
-
-		this.getLicenseId();
 
 		this._socket.connect();
 
@@ -42,19 +45,22 @@ export class UnactivatedComponent implements OnInit {
 	getTimeDate() {
 		this.timer = setInterval(() => {
 			this.time = new Date();
+			this.timeOfDay(this.time.getHours());
 		}, 1000);
 	}
 
-	getLicenseId() {
-		this._player.get_license_from_db().subscribe(
-			(data: any) => {
-				console.log(data)
-				// if(data) {
-				// 	localStorage.setItem('license_id', data.license_id);
-				// 	localStorage.setItem('license_key', data.license_key);
-				// 	this._router.navigate(['/setup/getting-ready'])
-				// }
-			}
+	reloadPlayer() {
+		this._router.navigate(['/setup/getting-ready'])
+	}
+
+	resetPlayer() {
+		this.subscription.add(
+			this._player.reset_player().subscribe(
+				data => {
+					console.log(data);
+					this._router.navigate(['/setup'])
+				}
+			)
 		)
 	}
 
@@ -76,5 +82,18 @@ export class UnactivatedComponent implements OnInit {
 				this._socket.disconnect();
 			}
 		})
+	}
+
+	timeOfDay(time) {
+		if (time < 12) {
+			this.day_status = 'morning'
+			this.day_greeting = 'Hello, Good Morning!'
+		} else if (time < 18) {
+			this.day_status = 'afternoon';
+			this.day_greeting = 'Hello, Good Afternoon!'
+		} else {
+			this.day_status = 'evening';
+			this.day_greeting = 'Hello, Good Evening!'
+		}
 	}
 }

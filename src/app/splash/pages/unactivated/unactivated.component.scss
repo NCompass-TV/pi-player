@@ -1,21 +1,48 @@
 .screen-saver {
-    align-items: center;
+    align-items: flex-end;
     background-color: #000;
+    background :  {
+        size: cover;
+        position: right bottom;
+    }
     display: flex;
     height: 100vh;
-    justify-content: center;
     width: 100%;
-    text-align: center;
+    text-align: left;
     overflow: hidden;
+
+    &.morning {
+        background-image: url('/assets/screensaver/morning.jpg');
+    }
+
+    &.afternoon {
+        background-image: url('/assets/screensaver/afternoon.jpg');
+    }
+
+    &.evening {
+        background-image: url('/assets/screensaver/evening.jpg');
+    }
+
     .time-date {
         color: #fff;
-        font-weight: 500;
-        font-size: 200px;
-        line-height: 120px;
-        padding: 30px 50px 30px 50px;
         margin: 0;
+        padding-bottom: 120px;
+        padding-left: 100px;
+        .greeting {
+            h2 {
+                display: inline-block;
+                font-weight: 100;
+                font-size: 50px;
+                padding-bottom: 70px;
+                padding-left: 20px;
+                text-align: center;
+            }
+        }
         .time {
             display: inline-block;
+            font-weight: 100;
+            font-size: 250px;
+            line-height: 50px;
             min-width: 500px;
             text-align: center;
         }
@@ -27,24 +54,48 @@
         .date {
             display: inline-block;
             font-size: 80px;
-            letter-spacing: 5px;
+            padding-left: 20px;
             width: 100%;
         }
     }
 
     .message {
         color: #fff;
-        position: absolute;
-        bottom: 10px;
-        left: 20px;
+        padding-left: 20px;
+        padding-top: 20px;
         width: 100%;
-        margin: auto;
         h3 {
             font : {
-                size: 18px;
+                size: 15px;
                 weight: 500;
             }
             margin-bottom: 0;
+        }
+    }
+
+    .controls {
+        bottom: 130px;
+        position: absolute;
+        right: 100px;
+    }
+
+    .pi-control {
+        background-color: transparent;
+        border-radius: 4px;
+        border: 2px solid #fff;
+        color: #ffffff;
+        cursor: pointer;
+        font-size: 15px;
+        font-weight: bold;
+        margin: 0 7px;
+        padding: 10px;
+        text-transform: uppercase;
+        transition: 0.2s linear;
+        width: 170px;
+
+        &:hover {
+            background-color: #fff;
+            color: #555;
         }
     }
 }

@@ -56,18 +56,14 @@ export class PlaylistPlayerComponent implements OnInit {
 		if (this.fileType(i) in VIDEO_FILETYPE) {
 			this.displayVideo(this.fileUrl(i), this.fileType(i));
 			if(this.isFullscreen(i) === 1) {
-				console.log('isFulllscreen', this.isFullscreen(i))
 				this.is_fullscreen.emit(true);
 			} else {
-				console.log('isFulllscreen', this.isFullscreen(i))
 				this.is_fullscreen.emit(false);
 			}
 		} else if (this.fileType(i) in IMAGE_FILETYPE) {
 			if(this.isFullscreen(i) === 1) {
-				console.log('isFulllscreen', this.isFullscreen(i))
 				this.is_fullscreen.emit(true);
 			} else {
-				console.log('isFulllscreen', this.isFullscreen(i))
 				this.is_fullscreen.emit(false);
 			}
 			this.displayImage(this.fileUrl(i), this.fileType(i))

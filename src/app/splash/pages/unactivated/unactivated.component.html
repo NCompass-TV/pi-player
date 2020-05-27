@@ -1,5 +1,10 @@
-<div class="screen-saver">
+<div class="screen-saver" [ngClass]="{'morning': day_status == 'morning', 'afternoon': day_status == 'afternoon', 'evening': day_status == 'evening'}">
     <div class="time-date">
+        <div class="greeting">
+            <h2>
+                {{ day_greeting }}
+            </h2>
+        </div>
         <div class="time">
             {{ time | date: 'hh:mm' }}
         </div>
@@ -7,12 +12,21 @@
             {{ time | date: 'a' }}
         </div>
         <div class="date">
-            {{ time | date: 'MM/dd/yy' }}
+            {{ time | date }}, {{ time | date: 'EEEE' }}
+        </div>
+        <div class="message">
+            <h3>
+                You may have entered an unactivated or license. Please contact your administrator - {{ license_key }}.
+            </h3>
         </div>
     </div>
-    <div class="message">
-        <h3>
-            Contact your administrator to activate your license.
-        </h3>
+
+    <div class="controls">
+        <button class="pi-control reset-player" (click)="resetPlayer()">
+            Reset Player
+        </button>
+        <button class="pi-control reload-player" (click)="reloadPlayer()">
+            Reload Player
+        </button>
     </div>
 </div>
