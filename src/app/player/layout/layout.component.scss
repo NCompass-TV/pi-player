@@ -1,0 +1,44 @@
+.player-info {
+    background-color: rgb(8, 18, 32);
+    box-sizing: border-box;
+    color:  #ffffff;
+    display: inline-block;
+    left: -400px;
+    top: 0;
+    padding: 20px;
+    position: absolute;
+    width: 400px;
+    z-index: 9;
+    transition: 0.5s linear;
+
+    &.shown {
+        left: 0;
+    }
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: #8f8f8f;
+    cursor: pointer;
+    outline: none;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+
+    &:hover {
+        color: #ffffff;
+    }
+}
+
+.label {
+    font-size: 13px;
+    font-weight: normal;
+    margin-bottom: 0;
+}
+
+.data {
+    margin: 0;
+    font-size: 15px;
+    margin-bottom: 25px;
+}

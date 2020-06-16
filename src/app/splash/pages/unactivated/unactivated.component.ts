@@ -30,8 +30,6 @@ export class UnactivatedComponent implements OnInit {
 		// Get and Set Timer Screensaver
 		this.getTimeDate();
 
-		this._socket.connect();
-
 		this.socket_launchReset();
 
 		this.socket_launchUpdate();
@@ -69,7 +67,6 @@ export class UnactivatedComponent implements OnInit {
 			console.log('Launch Reset', data);
 			if (data === this.license_id) {
 				this._router.navigate(['/setup/reset-pi']);
-				this._socket.disconnect();
 			}
 		})
 	}
@@ -79,7 +76,6 @@ export class UnactivatedComponent implements OnInit {
 			console.log('Launch Update', data);
 			if (data === this.license_id) {
 				this._router.navigate(['/setup/getting-ready']);
-				this._socket.disconnect();
 			}
 		})
 	}

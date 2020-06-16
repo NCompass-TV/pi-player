@@ -3,8 +3,6 @@ import { Socket } from 'ngx-socket-io';
 import { Subscription } from 'rxjs';
 import { PlayerService } from '../../../services/player.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { environment } from '../../../../environments/environment';
-import { License } from '../../../models/license.model';
 
 @Component({
   selector: 'app-preparing-player',
@@ -53,12 +51,6 @@ export class PreparingPlayerComponent implements OnInit {
 
 		// Setup Message Array is displayed
 		this.setupMessage(7000);
-			
-		// Set New Socket for Socket Server
-		this._socket.ioSocket.io.uri = environment.pi_socket;
-
-		// Connect to Socket Server
-		this._socket.connect();
 
 		// Socket Connection to get current download progress
 		this.socket_contentToDownload();
@@ -70,7 +62,6 @@ export class PreparingPlayerComponent implements OnInit {
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
-		this._socket.disconnect();
 	}
 
 	licenseExists() {
@@ -201,6 +192,7 @@ export class PreparingPlayerComponent implements OnInit {
 			this._player_service.get_player_content_on_server(license_key).subscribe(
 				data => {
 					console.log('#PreparingPlayerComponent - getPlayerContent() - Success: ', data);
+					localStorage.setItem('player_data', JSON.stringify(data));
 					if(data.message) {
 						this._router.navigate(['/setup/screen-saver']);
 					} else {
@@ -257,6 +249,7 @@ export class PreparingPlayerComponent implements OnInit {
 			this.download_success = true;
 			this.setupMessage(12000);
 			setTimeout(() => {
+				this._socket.emit('PP_update_finish');
 				this._router.navigate(['/player']).then(() => {
 					// HOTFIX: Reload page destination to Destroy previous socket sessions
 					window.location.reload();

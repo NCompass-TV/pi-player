@@ -4,6 +4,7 @@ export const environment = {
   server_url: 'http://3.212.225.229:72/api/',
   piDownloader: 'pidownloader/getcontents?licensekey=',
   registerLicense: 'license/register',
+  kafka_topic: 'content-count',
   
   // Nodejs Server
   public_url: 'http://localhost:3215',
@@ -14,13 +15,16 @@ export const environment = {
   saveDataAndDownload: '/select_data/content',
   clearDatabase: '/select_data/content/cleardb',
   hasLicense: '/select_data/content/has-license',
+  saveContentCount: '/save-content-count',
   saveLicensetoDb: '/license/save-license',
   getLicenseFromDb: '/license/get-license',
   resetPlayer: '/select_data/content/reset',
   screenshot: '/utils/screenshot',
+  kafka_send_to_broker: '/send-content-count-data',
 
   // Socket Server
-  socket_server: 'http://3.212.225.229:73',
-  // socket_server: 'http://192.168.100.13:3000',
-  pi_socket: 'http://localhost:3215'
+  // socket_server: 'http://3.212.225.229:73',
+  socket_server: 'http://localhost:3000',
+  pi_socket: 'http://localhost:3215',
+  kafka: 'http://localhost:5000',
 };

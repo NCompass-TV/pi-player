@@ -8,8 +8,6 @@ import { ZoneComponent } from './components/zone/zone.component';
 import { PlaylistPlayerComponent } from './components/playlist-player/playlist-player.component';
 import { IsImagePipe } from '../pipes/is-image.pipe';
 import { IsVideoPipe } from '../pipes/is-video.pipe';
-import { environment } from '../../environments/environment';
-import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 
 @NgModule({
 	declarations: [

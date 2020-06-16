@@ -28,6 +28,15 @@ export class PlayerService {
 	save_license(licensekey) {
 		return this.http.post<any>(`${environment.public_url}${environment.saveLicense}${licensekey}`, null);
 	}
+	
+	save_content_play_count(data) {
+		return this.http.post<any>(`${environment.public_url}${environment.saveContentCount}`, data);
+	}
+
+	// Send Content Count Data to Kafka Broker
+	content_count_data_send_to_broker(data) {
+		return this.http.post<any>(`${environment.kafka}${environment.kafka_send_to_broker}`, data);
+	}
 
 	// Check License Activation
 	get_player_content_on_server(licensekey) {
