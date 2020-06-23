@@ -24,7 +24,7 @@ export class PlaylistPlayerComponent implements OnInit {
 	player_current_content: Observable<string>;
 	playlist_content_type: string;
 	sequence_count: number = 0;
-	slide_duration: number = 8000;
+	slide_duration: number = 15000;
 	license_id: string;
 
 	public_url: string = `${environment.public_url}/assets`
