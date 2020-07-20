@@ -41,13 +41,11 @@ export class PlaylistPlayerComponent implements OnInit {
 		this.subscription.add(
 			this._player.get_playlist_sequence(this.playlist_id).subscribe(
 				(data: Content[]) => {
-					console.log(data);
 					const sorted_playlist = data.sort(
 						(a, b) => {
 							return a.sequence - b.sequence;
 						}
 					)
-					// console.log('Playlist: ', this.playlist_id, 'Content', sorted_playlist);
 					this.player_playlist_content = sorted_playlist;
 					this.checkFileType(this.sequence_count);
 				}
@@ -124,13 +122,10 @@ export class PlaylistPlayerComponent implements OnInit {
 			date
 		)
 
-		console.log(content_play_count)
-
 		this.subscription.add(
 			this._player.save_content_play_count(content_play_count).subscribe(
 				data => {
-					console.log('saveLogToDatabase', data);
-					
+					return null;
 				},
 				error => {
 					console.log('saveLogToDatabase', error)
@@ -154,7 +149,7 @@ export class PlaylistPlayerComponent implements OnInit {
 
 		this._player.content_count_data_send_to_broker(payload).subscribe(
 			data => {
-				console.log('sendLogToBroker', data);
+				return null;
 			}, 
 			error => {
 				console.log('sendLogToBroker', error);

@@ -252,7 +252,7 @@ export class PreparingPlayerComponent implements OnInit {
 				this._socket.emit('PP_update_finish');
 				this._router.navigate(['/player']).then(() => {
 					// HOTFIX: Reload page destination to Destroy previous socket sessions
-					window.location.reload();
+					console.log('Redirected to Player')
 				});
 			}, 10000)
 		}

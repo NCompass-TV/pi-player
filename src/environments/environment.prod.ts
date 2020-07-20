@@ -23,8 +23,6 @@ export const environment = {
   kafka_send_to_broker: '/send-content-count-data',
 
   // Socket Server
-  // socket_server: 'http://3.212.225.229:73',
-  socket_server: 'http://localhost:3000',
   pi_socket: 'http://localhost:3215',
   kafka: 'http://localhost:5000',
 };
