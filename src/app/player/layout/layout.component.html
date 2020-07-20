@@ -1,1 +1,18 @@
 <app-background></app-background>
+
+<div class="player-info" [ngClass]="showInfo ? 'shown' : null">
+    <button class="close-btn" (click)="showInfo = false">
+        <strong>x</strong>
+    </button>
+    <h5 class="label">License Key</h5>
+    <h6 class="data">{{ licenseKey }}</h6>
+    
+    <h5 class="label">Dealer</h5>
+    <h6 class="data">{{ contentData.piContents.dealer.businessName }}</h6>
+    
+    <h5 class="label">Host</h5>
+    <h6 class="data">{{ contentData.piContents.host.name }}</h6>
+    
+    <h5 class="label">Screen Name</h5>
+    <h6 class="data">{{ contentData.piContents.screen.screenName }}</h6>
+</div>

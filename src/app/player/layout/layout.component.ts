@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable, fromEvent } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
 import { PlayerService } from '../../services/player.service';
-import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-layout',
@@ -12,18 +12,44 @@ import { Subscription } from 'rxjs';
 })
 
 export class LayoutComponent implements OnInit {
-
-	license_id: string = localStorage.getItem('license_id');
+	licenseKey: string;
+	contentData: any;
+	mouseXPos: number;
+	showInfo: boolean = false;
+	license_id: string;
+	counter: number = 1;
 	subscription: Subscription = new Subscription;
 
 	constructor(
+		private _player: PlayerService,
 		private _socket: Socket,
 		private _router: Router,
-		private _player: PlayerService
 	) { }
 
 	ngOnInit() {
-		// Get License ID and Key from Pi Database
+		this.connectToSocket();
+		this.getLicenseIdKey();
+		this.playerDisplayInfo();
+		this.triggerReset();
+		this.triggerScreenshot();
+		this.triggerUpdatePlayer();
+	}
+
+	connectToSocket() {
+		this._socket.emit('electron_is_running');
+	}
+
+	playerDisplayInfo() {
+		this.licenseKey = localStorage.getItem('license_key');
+		this.contentData = JSON.parse(localStorage.getItem('player_data'));
+		fromEvent(document.body, 'mousemove').subscribe((e: MouseEvent) => {
+			if (e.pageX == 0) {
+				this.showInfo = true;
+			} 
+		});
+	}
+
+	getLicenseIdKey() {
 		this.subscription.add(
 			this._player.get_license_from_db().subscribe(
 				(data: any[]) => {
@@ -36,27 +62,38 @@ export class LayoutComponent implements OnInit {
 				}
 			)
 		)
+	}
 
-		// Set New Socket for Socket Server
-		this._socket.ioSocket.io.uri = environment.socket_server;
-		
-		// Connect to Socket Server
-		this._socket.connect();
-
-		this._socket.on('launch_update', (data) => {
+	triggerUpdatePlayer() {
+		this._socket.on('LSS_launch_update', (data) => {
 			console.log('Launch Update', data);
-			if (data === this.license_id) {
-				this._router.navigate(['/setup/getting-ready'], { queryParams: { update_player: true } });
-				this._socket.disconnect();
-			}
+			this._router.navigate(['/setup/getting-ready'], { queryParams: { update_player: true } });
 		})
+	}
 
-		this._socket.on('launch_reset', (data) => {
+	triggerReset() {
+		this._socket.on('LSS_launch_reset', (data) => {
 			console.log('Launch Reset', data);
-			if (data === this.license_id) {
-				this._router.navigate(['/setup/reset-pi']);
-				this._socket.disconnect();
+			this._router.navigate(['/setup/reset-pi']);
+		})
+	}
+
+	triggerScreenshot() {
+		this._socket.on('launch_screenshot', (key) => {
+			console.log('LAUNCH SCREENSHOT', key, this.license_id, this.counter++);
+			if (key === this.license_id) {
+				this.subscription.add(
+					this._player.screenShot_player().subscribe(
+						data => {
+							console.log(data);
+						}
+					)
+				)
 			}
 		})
+	}
+
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
 	}
 }

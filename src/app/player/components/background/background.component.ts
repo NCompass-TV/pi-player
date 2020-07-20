@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PlayerService } from '../../../services/player.service';
 import { Observable } from 'rxjs';
 import { Template } from '../../../models/template.model';
+import { PlayerService } from '../../../services/player.service';
 
 @Component({
 	selector: 'app-background',
@@ -10,14 +10,18 @@ import { Template } from '../../../models/template.model';
 })
 
 export class BackgroundComponent implements OnInit {
-
+	
 	data$: Observable<Template[]>;
 
 	constructor(
-		private playerService: PlayerService
-	) { }
+		private _player: PlayerService
+	) {}
 
 	ngOnInit() {
-		this.data$ = this.playerService.get_template();
+		this.getTemplate();
+	}
+
+	getTemplate() {
+		this.data$ = this._player.get_template();
 	}
 }

@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PlayerService } from '../../../services/player.service';
-import { HasLicense } from 'src/app/models/has-license.model';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { PlayerService } from '../../../services/player.service';
 
 @Component({
 	selector: 'app-register-license',
@@ -20,6 +19,14 @@ export class RegisterLicenseComponent implements OnInit {
 	) { }
 
 	ngOnInit() {
+		this.getLicenseFromDB();
+	}
+
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
+	}
+
+	getLicenseFromDB() {
 		this.subscription.add(
 			this._player_service.get_license_from_db().subscribe(
 				(data: any[]) => {
@@ -32,9 +39,5 @@ export class RegisterLicenseComponent implements OnInit {
 				}
 			)
 		)
-	}
-
-	ngOnDestroy() {
-		this.subscription.unsubscribe();
 	}
 }

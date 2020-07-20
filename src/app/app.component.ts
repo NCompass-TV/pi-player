@@ -18,12 +18,5 @@ export class AppComponent {
 
 
 	ngOnInit() {
-		this._socket.on('restart_the_pi', (data) => {
-			this._http.get('http://localhost:3215/select_data/content/restart-pi').subscribe(
-				data => {
-					console.log(data);
-				}
-			)  
-		})
 	}
 }

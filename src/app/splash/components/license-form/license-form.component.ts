@@ -14,16 +14,16 @@ import { License } from '../../../models/license.model';
 
 export class LicenseFormComponent implements OnInit {
 
-	subscription: Subscription = new Subscription;
-
+	internal_server: boolean = false;
 	is_disabled: boolean = true;
 	is_submitted: boolean = false;
-	internal_server: boolean = false;
-	server_error: string;
 	license: string;
+	license_exist: boolean = false;
 	license_is_registered_and_activated: boolean = false;
 	pi_info: any;
 	register_license_form: FormGroup;
+	server_error: string;
+	subscription: Subscription = new Subscription;
 	
 	constructor(
 		private _player_service: PlayerService,
@@ -104,13 +104,13 @@ export class LicenseFormComponent implements OnInit {
 		this.subscription.add(
 			this._player_service.register_license(license_info).subscribe(
 				(data: License) => {
+					console.log(data);
 					if(data.message) {
 						console.log('#LicenseFormComponent - registerLicense() - Error:', data.message);
 						this.is_submitted = false;
 						this.internal_server = true;
-						this.server_error = data.message;
-						// Must add redirection to License Does Not Exist Page...
-						this._router.navigate(['/setup/screen-saver']);
+						this.license_exist = false;
+						this.server_error = 'License does not exist!';
 					} else {
 						console.log('#LicenseFormComponent - registerLicense() - Success:', data);
 						localStorage.setItem('license_id', data.licenseId);

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { Socket } from 'ngx-socket-io';
 import { PlayerService } from '../../../services/player.service';
 
 @Component({
@@ -15,6 +16,7 @@ export class ResetPiComponent implements OnInit {
 
 	constructor(
 		private _player: PlayerService,
+		private _socket: Socket,
 		private _router: Router
 	) { }
 

@@ -40,7 +40,6 @@ export class ZoneComponent implements OnInit {
 	}
 
 	setToFullscreen(e) {
-		console.log('fullscreen_', e);
 		this.is_fullscreen = e;
 	}
 }
