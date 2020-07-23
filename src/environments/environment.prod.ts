@@ -1,7 +1,7 @@
 export const environment = {
-  production: false,
+  production: true,
   // DotNet Server
-  server_url: 'http://3.212.225.229:72/api/',
+  server_url: 'http://3.212.225.229/api/',
   piDownloader: 'pidownloader/getcontents?licensekey=',
   registerLicense: 'license/register',
   kafka_topic: 'content-count',
