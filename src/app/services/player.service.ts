@@ -33,11 +33,6 @@ export class PlayerService {
 		return this.http.post<any>(`${environment.public_url}${environment.saveContentCount}`, data);
 	}
 
-	// Send Content Count Data to Kafka Broker
-	content_count_data_send_to_broker(data) {
-		return this.http.post<any>(`${environment.kafka}${environment.kafka_send_to_broker}`, data);
-	}
-
 	// Check License Activation
 	get_player_content_on_server(licensekey) {
 		return this.http.get<any>(`${environment.server_url}${environment.piDownloader}${licensekey}`);
@@ -64,7 +59,7 @@ export class PlayerService {
 
 	// Then get playlist sequence
 	get_playlist_sequence(id) {
-		return this.http.get<any>(`${environment.public_url}/select_data/playlist/${id}`).pipe(map(data => data));
+		return this.http.get<any>(`${environment.public_url}${environment.playlist}${id}`).pipe(map(data => data));
 	}
 
 	// Time Checker

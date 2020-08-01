@@ -134,29 +134,6 @@ export class PlaylistPlayerComponent implements OnInit {
 		)
 	}
 
-	sendLogToBroker(content_id) {
-		const date = this._date.transform(new Date(), 'short');
-		const content_data: ContentLogData = new ContentLogData(
-			content_id,
-			date,
-			this.license_id
-		);
-
-		const payload: ContentLog = new ContentLog(
-			environment.kafka_topic,
-			content_data
-		);
-
-		this._player.content_count_data_send_to_broker(payload).subscribe(
-			data => {
-				return null;
-			}, 
-			error => {
-				console.log('sendLogToBroker', error);
-			}
-		)
-	}
-
 	// On Video Ended Event
 	onVideoEnded() {
 		if (this.sequence_count++ != this.player_playlist_content.length - 1) {
