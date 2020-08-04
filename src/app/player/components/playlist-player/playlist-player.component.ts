@@ -57,6 +57,11 @@ export class PlaylistPlayerComponent implements OnInit {
 		this.subscription.unsubscribe();
 	}
 
+	mediaFileError(e) {
+		console.log(e);
+		this.checkFileType(this.sequence_count++);
+	}
+
 	// Check File Type and Play Display Content Accordingly
 	checkFileType(i) {
 		if (this.fileType(i) in VIDEO_FILETYPE) {
