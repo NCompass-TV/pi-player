@@ -80,6 +80,8 @@ export class PreparingPlayerComponent implements OnInit {
 					} else {
 						this.clearDatabase(false, this.license_id, this.license_key)
 					}
+					
+					this._socket.emit('PP_launch_update');
 				},
 				error => {
 					console.log(error);

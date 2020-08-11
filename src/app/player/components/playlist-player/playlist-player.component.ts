@@ -24,7 +24,6 @@ export class PlaylistPlayerComponent implements OnInit {
 	player_current_content: Observable<string>;
 	playlist_content_type: string;
 	sequence_count: number = 0;
-	slide_duration: number = 15000;
 	license_id: string;
 
 	public_url: string = `${environment.public_url}/assets`
@@ -77,7 +76,7 @@ export class PlaylistPlayerComponent implements OnInit {
 			} else {
 				this.is_fullscreen.emit(false);
 			}
-			this.displayImage(this.fileUrl(i), this.fileType(i), i)
+			this.displayImage(this.fileUrl(i), this.fileType(i), this.contentDuration(i), i)
 		}
 	}
 
@@ -89,10 +88,12 @@ export class PlaylistPlayerComponent implements OnInit {
 	}
 
 	// Display Image Content
-	displayImage(fileurl, filetype, i) {
+	displayImage(fileurl, filetype, duration, i) {
 		this.player_current_content = fileurl;
 		this.playlist_content_type = filetype
 		this.saveLogToDatabase(this.player_playlist_content[i].content_id);
+
+		let slide_duration = duration > 0 ? duration : 20000;
 
 		setTimeout(() => {
 			if (this.sequence_count < this.player_playlist_content.length - 1) {
@@ -101,7 +102,7 @@ export class PlaylistPlayerComponent implements OnInit {
 				this.sequence_count = 0;
 			}
 			this.checkFileType(this.sequence_count);
-		}, this.slide_duration);
+		}, slide_duration);
 	}
 
 	// Get Current File Url By Current Sequence
@@ -112,6 +113,11 @@ export class PlaylistPlayerComponent implements OnInit {
 	// Get Current File Type By Current Sequence
 	fileType(i) {
 		return this.player_playlist_content[i].file_type;
+	}
+
+	// Get Duration of current File
+	contentDuration(i) {
+		return this.player_playlist_content[i].duration * 1000;
 	}
 
 	// Set Fullscreen
