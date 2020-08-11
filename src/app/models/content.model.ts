@@ -6,5 +6,6 @@ export class Content {
     file_type: string;
     handler_id: string;
     sequence: number;
-    is_fullscreen: number;
+	is_fullscreen: number;
+	duration: number;
 }
