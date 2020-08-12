@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { PlayerService } from '../../../services/player.service';
+import { Socket } from 'ngx-socket-io';
 
 @Component({
 	selector: 'app-register-license',
@@ -15,11 +16,17 @@ export class RegisterLicenseComponent implements OnInit {
 
 	constructor(
 		private _player_service: PlayerService,
-		private _router: Router
+		private _router: Router,
+		private _socket: Socket,
 	) { }
 
 	ngOnInit() {
 		this.getLicenseFromDB();
+		
+		this._socket.on('PI_has_license', data => {
+			console.log('PI Has License');
+			this.getLicenseFromDB();
+		})
 	}
 
 	ngOnDestroy() {
