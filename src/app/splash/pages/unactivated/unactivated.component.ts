@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
 import { Subscription } from 'rxjs';
 import { PlayerService } from '../../../services/player.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-unactivated',
@@ -24,7 +25,10 @@ export class UnactivatedComponent implements OnInit {
 		private _player: PlayerService,
 		private _router: Router,
 		private _socket: Socket
-	) { }
+	) { 
+		this._socket.ioSocket.io.uri = environment.pi_socket;
+		this._socket.connect();
+	}
 
 	ngOnInit() {
 		// Get and Set Timer Screensaver
@@ -38,6 +42,7 @@ export class UnactivatedComponent implements OnInit {
 
 	ngOnDestroy(){
 		clearInterval(this.timer);
+		this._socket.disconnect();
 	}
 
 	getTimeDate() {

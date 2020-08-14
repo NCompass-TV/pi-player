@@ -125,20 +125,20 @@ input, button {
             display: block;
         }
     }
+}
 
-    .setup-message {
-        color: #555;
-        font : {
-            size: 40px; 
-            weight: 300;
-        }
-        opacity: 1;
-        transition: all 0.5s cubic-bezier(.25,.8,.25,1);
+.setup-message {
+	color: #555;
+	font : {
+		size: 40px; 
+		weight: 300;
+	}
+	opacity: 1;
+	transition: all 0.5s cubic-bezier(.25,.8,.25,1);
 
-        &.fadeIn {
-            opacity: 0;
-        }
-    }
+	&.fadeIn {
+		opacity: 0;
+	}
 }
 
 

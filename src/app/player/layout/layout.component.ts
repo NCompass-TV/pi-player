@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
 import { Router } from '@angular/router';
 import { PlayerService } from '../../services/player.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
 	selector: 'app-layout',
@@ -25,7 +26,10 @@ export class LayoutComponent implements OnInit {
 		private _player: PlayerService,
 		private _socket: Socket,
 		private _router: Router,
-	) { }
+	) { 
+		this._socket.ioSocket.io.uri = environment.pi_socket;
+		this._socket.connect();
+	}
 
 	ngOnInit() {
 		this.connectToSocket();
@@ -34,6 +38,11 @@ export class LayoutComponent implements OnInit {
 		this.triggerReset();
 		this.triggerScreenshot();
 		this.triggerUpdatePlayer();
+	}
+
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
+		this._socket.disconnect();
 	}
 
 	connectToSocket() {
@@ -100,9 +109,5 @@ export class LayoutComponent implements OnInit {
 				)
 			}
 		})
-	}
-
-	ngOnDestroy() {
-		this.subscription.unsubscribe();
 	}
 }
