@@ -22,6 +22,7 @@ export class ZoneComponent implements OnInit {
 	@Input() zone_pos_y: string;
 	@Input() zone_playlist_id: string;
 	@Input() zone_playlist_type: string;
+	@Input() zone_order: number;
 	is_fullscreen: boolean;
 	
 	// Internal

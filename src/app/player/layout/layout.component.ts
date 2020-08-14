@@ -19,6 +19,7 @@ export class LayoutComponent implements OnInit {
 	license_id: string;
 	counter: number = 1;
 	subscription: Subscription = new Subscription;
+	is_closed: boolean = true;
 
 	constructor(
 		private _player: PlayerService,
@@ -37,6 +38,14 @@ export class LayoutComponent implements OnInit {
 
 	connectToSocket() {
 		this._socket.emit('electron_is_running');
+		
+		this._socket.on('PS_operation_closed', data => {
+			this.is_closed = true;
+		})
+
+		this._socket.on('PS_operation_open', data => {
+			this.is_closed = false;
+		})
 	}
 
 	playerDisplayInfo() {
