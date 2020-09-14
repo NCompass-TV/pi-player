@@ -30,6 +30,7 @@ export class PlayerService {
 	}
 	
 	save_content_play_count(data) {
+		
 		return this.http.post<any>(`${environment.public_url}${environment.saveContentCount}`, data);
 	}
 

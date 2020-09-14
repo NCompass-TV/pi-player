@@ -7,6 +7,7 @@ import { VIDEO_FILETYPE, IMAGE_FILETYPE } from  '../../../models/filetype';
 import { ContentPlayCount } from 'src/app/models/content-play-count.model';
 import { ContentLog, ContentLogData } from 'src/app/models/content-log.model';
 import { DatePipe } from '@angular/common';
+import { Socket } from 'ngx-socket-io';
 
 @Component({
 	selector: 'app-playlist-player',
@@ -31,7 +32,8 @@ export class PlaylistPlayerComponent implements OnInit {
 
 	constructor(
 		private _player: PlayerService,
-		private _date: DatePipe
+		private _date: DatePipe,
+		private _socket: Socket
 	) { }
 
 	ngOnInit() {
@@ -77,6 +79,13 @@ export class PlaylistPlayerComponent implements OnInit {
 				this.is_fullscreen.emit(false);
 			}
 			this.displayImage(this.fileUrl(i), this.fileType(i), this.contentDuration(i), i)
+		} else if (this.fileType(i) == 'feed') {
+			if(this.isFullscreen(i) === 1) {
+				this.is_fullscreen.emit(true);
+			} else {
+				this.is_fullscreen.emit(false);
+			}
+			this.displayFeed(this.player_playlist_content[i].url, this.fileType(i), this.contentDuration(i), i)
 		}
 	}
 
@@ -84,14 +93,33 @@ export class PlaylistPlayerComponent implements OnInit {
 	displayVideo(fileurl, filetype, i) {
 		this.player_current_content = fileurl;
 		this.playlist_content_type = filetype
-		this.saveLogToDatabase(this.player_playlist_content[i].content_id);
+		this.sendLogsOverSocket(this.player_playlist_content[i].content_id);
+	}
+
+	// Display Feed Content
+	displayFeed(url, type, duration, i) {
+		this.player_current_content = url;
+		this.playlist_content_type = type;
+
+		this.sendLogsOverSocket(this.player_playlist_content[i].content_id);
+
+		let slide_duration = duration > 0 ? duration : 20000;
+
+		setTimeout(() => {
+			if (this.sequence_count < this.player_playlist_content.length - 1) {
+				this.sequence_count++;
+			} else {
+				this.sequence_count = 0;
+			}
+			this.checkFileType(this.sequence_count);
+		}, slide_duration);
 	}
 
 	// Display Image Content
 	displayImage(fileurl, filetype, duration, i) {
 		this.player_current_content = fileurl;
 		this.playlist_content_type = filetype
-		this.saveLogToDatabase(this.player_playlist_content[i].content_id);
+		this.sendLogsOverSocket(this.player_playlist_content[i].content_id);
 
 		let slide_duration = duration > 0 ? duration : 20000;
 
@@ -125,6 +153,7 @@ export class PlaylistPlayerComponent implements OnInit {
 		return this.player_playlist_content[i].is_fullscreen;
 	}
 
+	// Send Logs via HTTPS
 	saveLogToDatabase(content) {
 		const date = this._date.transform(new Date(), 'y-MM-d H:mm:ss');
 		let content_play_count: ContentLogData = new ContentLogData(
@@ -139,10 +168,22 @@ export class PlaylistPlayerComponent implements OnInit {
 					return null;
 				},
 				error => {
-					console.log('saveLogToDatabase', error)
+					console.log('sendLogsOverSocket', error)
 				}
 			)
 		)
+	}
+
+	// Send Logs via Socket
+	sendLogsOverSocket(content) {
+		const date = this._date.transform(new Date(), 'y-MM-d H:mm:ss');
+		let content_play_count: ContentLogData = new ContentLogData(
+			this.license_id,
+			content,
+			date
+		)
+
+		this._socket.emit('PP_logs', content_play_count);
 	}
 
 	// On Video Ended Event
