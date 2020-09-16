@@ -1,4 +1,4 @@
-<video [src]="player_current_content | async" *ngIf="playlist_content_type | isVideo" (error)="mediaFileError($event)" (ended)="onVideoEnded()" autoplay [muted]="true"></video>
+<video #videoPlayer [src]="player_current_content | async" *ngIf="playlist_content_type | isVideo" (error)="mediaFileError($event)" (ended)="onVideoEnded()" autoplay [muted]="true"></video>
 
 <img [src]="player_current_content | async" *ngIf="playlist_content_type | isImage" (error)="mediaFileError($event)">
 

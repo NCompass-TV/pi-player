@@ -1,11 +1,10 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ViewChild, ElementRef } from '@angular/core';
 import { Subscription, Observable, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { PlayerService } from '../../../services/player.service';
 import { Content } from '../../../models/content.model';
 import { VIDEO_FILETYPE, IMAGE_FILETYPE } from  '../../../models/filetype';
-import { ContentPlayCount } from 'src/app/models/content-play-count.model';
-import { ContentLog, ContentLogData } from 'src/app/models/content-log.model';
+import { ContentLogData } from 'src/app/models/content-log.model';
 import { DatePipe } from '@angular/common';
 import { Socket } from 'ngx-socket-io';
 
@@ -20,12 +19,14 @@ export class PlaylistPlayerComponent implements OnInit {
 
 	@Input() playlist_id: string;
 	@Output() is_fullscreen = new EventEmitter;
+	@ViewChild('videoPlayer', {static: false}) videoplayer: ElementRef;
 
 	player_playlist_content: Content[] = [];
 	player_current_content: Observable<string>;
 	playlist_content_type: string;
 	sequence_count: number = 0;
 	license_id: string;
+	replay: boolean = false;
 
 	public_url: string = `${environment.public_url}/assets`
 	subscription: Subscription = new Subscription;
@@ -93,6 +94,15 @@ export class PlaylistPlayerComponent implements OnInit {
 	displayVideo(fileurl, filetype, i) {
 		this.player_current_content = fileurl;
 		this.playlist_content_type = filetype
+
+		if (i > 0) {
+			if (this.player_playlist_content[i].file_name == this.player_playlist_content[i-1].file_name) {
+				this.videoplayer.nativeElement.play();
+			} else {
+				this.replay = false;
+			}
+		}
+
 		this.sendLogsOverSocket(this.player_playlist_content[i].content_id);
 	}
 
