@@ -98,8 +98,6 @@ export class PlaylistPlayerComponent implements OnInit {
 		if (i > 0) {
 			if (this.player_playlist_content[i].file_name == this.player_playlist_content[i-1].file_name) {
 				this.videoplayer.nativeElement.play();
-			} else {
-				this.replay = false;
 			}
 		}
 
