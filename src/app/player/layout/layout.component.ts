@@ -36,6 +36,7 @@ export class LayoutComponent implements OnInit {
 		this.getLicenseIdKey();
 		this.playerDisplayInfo();
 		this.triggerReset();
+		this.triggerRefetch();
 		this.triggerScreenshot();
 		this.triggerUpdatePlayer();
 	}
@@ -92,7 +93,14 @@ export class LayoutComponent implements OnInit {
 	triggerReset() {
 		this._socket.on('LSS_launch_reset', (data) => {
 			console.log('Launch Reset', data);
-			this._router.navigate(['/setup/reset-pi']);
+			this._router.navigate(['/setup/reset-pi'], { queryParams: { reset: true } });
+		})
+	}
+
+	triggerRefetch() {
+		this._socket.on('LSS_launch_refetch', (data) => {
+			console.log('Launch Refetch', data);
+			this._router.navigate(['/setup/reset-pi'], { queryParams: { refetch: true } });
 		})
 	}
 
