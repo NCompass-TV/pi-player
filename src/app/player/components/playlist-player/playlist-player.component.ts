@@ -60,12 +60,14 @@ export class PlaylistPlayerComponent implements OnInit {
 	}
 
 	mediaFileError(e) {
-		console.log(e);
-		this.checkFileType(this.sequence_count++);
+		console.log(e, this.sequence_count);
+		this.sequence_count++
+		this.checkFileType(this.sequence_count);
 	}
 
 	// Check File Type and Play Display Content Accordingly
 	checkFileType(i) {
+		console.log('test')
 		if (this.fileType(i) in VIDEO_FILETYPE) {
 			this.displayVideo(this.fileUrl(i), this.fileType(i), i);
 			if(this.isFullscreen(i) === 1) {
