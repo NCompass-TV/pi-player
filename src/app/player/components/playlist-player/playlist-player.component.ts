@@ -67,7 +67,6 @@ export class PlaylistPlayerComponent implements OnInit {
 
 	// Check File Type and Play Display Content Accordingly
 	checkFileType(i) {
-		console.log('test')
 		if (this.fileType(i) in VIDEO_FILETYPE) {
 			this.displayVideo(this.fileUrl(i), this.fileType(i), i);
 			if(this.isFullscreen(i) === 1) {
