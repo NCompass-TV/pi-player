@@ -87,7 +87,7 @@ export class PlaylistPlayerComponent implements OnInit {
 			} else {
 				this.is_fullscreen.emit(false);
 			}
-			this.displayFeed(this.player_playlist_content[i].url, this.fileType(i), this.contentDuration(i), i)
+			this.displayFeed(`${this.public_url}/${this.player_playlist_content[i].content_id}`, this.fileType(i), this.contentDuration(i), i)
 		}
 	}
 
