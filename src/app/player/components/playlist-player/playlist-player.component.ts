@@ -197,16 +197,25 @@ export class PlaylistPlayerComponent implements OnInit {
 
 	// On Video Ended Event
 	onVideoEnded() {
-		if (this.sequence_count++ != this.player_playlist_content.length - 1) {
-			setTimeout(() => {
-				this.checkFileType(this.sequence_count);
-			}, 500);
+		this.playlist_content_type = null;
+
+		if (this.player_playlist_content.length > 1) {
+			if (this.sequence_count++ != this.player_playlist_content.length - 1) {
+				setTimeout(() => {
+					this.checkFileType(this.sequence_count);
+				}, 0);
+			} else {
+				this.sequence_count = 0;
+				setTimeout(() => {
+					this.checkFileType(this.sequence_count);
+				}, 0)
+			}
 		} else {
-			this.sequence_count = 0;
 			setTimeout(() => {
-				this.checkFileType(this.sequence_count);
-			}, 500)
+				this.checkFileType(0);
+			}, 0)
 		}
+
 		return true;
 	}
 }
