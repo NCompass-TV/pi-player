@@ -78,12 +78,9 @@ export class UnactivatedComponent implements OnInit {
 
 	socket_launchUpdate() {
 		this._socket.on('LSS_launch_update', (data) => {
-			console.log('Launch Update', data);
-			if (data === this.license_id) {
-				this._router.navigate(['/setup/getting-ready']).then(() => {
-					window.location.reload();
-				});
-			}
+			this._router.navigate(['/setup/getting-ready']).then(() => {
+				window.location.reload();
+			});
 		})
 	}
 

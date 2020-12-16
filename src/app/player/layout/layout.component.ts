@@ -85,7 +85,6 @@ export class LayoutComponent implements OnInit {
 
 	triggerUpdatePlayer() {
 		this._socket.on('LSS_launch_update', (data) => {
-			console.log('Launch Update', data);
 			this._router.navigate(['/setup/getting-ready'], { queryParams: { update_player: true } });
 		})
 	}
