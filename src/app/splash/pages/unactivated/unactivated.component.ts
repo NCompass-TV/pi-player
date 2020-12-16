@@ -37,12 +37,10 @@ export class UnactivatedComponent implements OnInit {
 		this.socket_launchReset();
 
 		this.socket_launchUpdate();
-	
 	}
 
 	ngOnDestroy(){
 		clearInterval(this.timer);
-		this._socket.disconnect();
 	}
 
 	getTimeDate() {
