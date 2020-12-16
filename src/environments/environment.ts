@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   // DotNet Server
-  server_url: 'http://52.73.23.100:82/api/',
+  server_url: 'http://3.212.225.229:92/api/',
   piDownloader: 'pidownloader/getcontents?licensekey=',
   registerLicense: 'license/register',
   
@@ -25,6 +25,6 @@ export const environment = {
 
   // Misc
   pi_socket: 'http://localhost:3215',
-  socket_server: 'http://52.73.23.100:83',
+  socket_server: 'http://3.212.225.229:93',
   kafka_topic: 'content-count'
 };

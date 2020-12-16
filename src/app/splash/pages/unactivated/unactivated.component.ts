@@ -53,7 +53,9 @@ export class UnactivatedComponent implements OnInit {
 	}
 
 	reloadPlayer() {
-		this._router.navigate(['/setup/getting-ready'])
+		this._router.navigate(['/setup/getting-ready']).then(() => {
+			window.location.reload();
+		})
 	}
 
 	resetPlayer() {
