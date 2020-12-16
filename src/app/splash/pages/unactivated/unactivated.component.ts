@@ -70,7 +70,7 @@ export class UnactivatedComponent implements OnInit {
 	}
 
 	socket_launchReset() {
-		this._socket.on('launch_reset', (data) => {
+		this._socket.on('LSS_launch_reset', (data) => {
 			console.log('Launch Reset', data);
 			if (data === this.license_id) {
 				this._router.navigate(['/setup/reset-pi']);
@@ -79,7 +79,7 @@ export class UnactivatedComponent implements OnInit {
 	}
 
 	socket_launchUpdate() {
-		this._socket.on('launch_update', (data) => {
+		this._socket.on('LSS_launch_update', (data) => {
 			console.log('Launch Update', data);
 			if (data === this.license_id) {
 				this._router.navigate(['/setup/getting-ready']).then(() => {
