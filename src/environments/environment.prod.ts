@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   // DotNet Server
-  server_url: 'http://3.212.225.229:92/api/',
+  server_url: 'http://n-compass.online:82/api/',
   piDownloader: 'pidownloader/getcontents?licensekey=',
   registerLicense: 'license/register',
   
