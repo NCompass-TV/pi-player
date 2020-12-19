@@ -18,11 +18,13 @@ export const environment = {
   saveLicensetoDb: '/api/license/save-license',
   getLicenseFromDb: '/api/license/get-license',
   resetPlayer: '/api/content/reset',
+  refetchPlayer: '/api/content/refetch',
   screenshot: '/api/utils/screenshot',
   playlist: '/api/playlist/',
   kafka_send_to_broker: '/send-content-count-data',
 
   // Misc
   pi_socket: 'http://localhost:3215',
+  socket_server: 'http://3.212.225.229:93',
   kafka_topic: 'content-count'
 };

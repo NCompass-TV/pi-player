@@ -30,6 +30,7 @@ export class PlayerService {
 	}
 	
 	save_content_play_count(data) {
+		
 		return this.http.post<any>(`${environment.public_url}${environment.saveContentCount}`, data);
 	}
 
@@ -77,11 +78,17 @@ export class PlayerService {
 		return this.http.post(`${environment.public_url}${environment.saveLicensetoDb}`, license_data);
 	}
 	
-	//
+	// Clear Player Data
 	reset_player() {
 		return this.http.get(`${environment.public_url}${environment.resetPlayer}`);
 	}
 
+	// Refetch Player Data
+	refetch_player_data() {
+		return this.http.get(`${environment.public_url}${environment.refetchPlayer}`);
+	}
+
+	// Screenshot Player
 	screenShot_player() {
 		return this.http.get(`${environment.public_url}${environment.screenshot}`);
 	}

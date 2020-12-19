@@ -8,6 +8,8 @@ import { ZoneComponent } from './components/zone/zone.component';
 import { PlaylistPlayerComponent } from './components/playlist-player/playlist-player.component';
 import { IsImagePipe } from '../pipes/is-image.pipe';
 import { IsVideoPipe } from '../pipes/is-video.pipe';
+import { IsFeedPipe } from '../pipes/is-feed.pipe';
+import { SanitizePipe } from '../pipes/sanitize.pipe';
 
 @NgModule({
 	declarations: [
@@ -16,7 +18,9 @@ import { IsVideoPipe } from '../pipes/is-video.pipe';
 		ZoneComponent,
 		PlaylistPlayerComponent,
 		IsVideoPipe,
-		IsImagePipe
+		IsImagePipe,
+		IsFeedPipe,
+		SanitizePipe
 	],
 
 	imports: [
@@ -29,7 +33,9 @@ import { IsVideoPipe } from '../pipes/is-video.pipe';
 		BackgroundComponent, 
 		ZoneComponent,
 		IsVideoPipe,
-		IsImagePipe
+		IsImagePipe,
+		IsFeedPipe,
+		SanitizePipe
 	]
 })
 
