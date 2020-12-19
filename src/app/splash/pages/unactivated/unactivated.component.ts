@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Socket } from 'ngx-socket-io';
 import { Subscription } from 'rxjs';
 import { PlayerService } from '../../../services/player.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-unactivated',
@@ -24,7 +25,10 @@ export class UnactivatedComponent implements OnInit {
 		private _player: PlayerService,
 		private _router: Router,
 		private _socket: Socket
-	) { }
+	) { 
+		this._socket.ioSocket.io.uri = environment.pi_socket;
+		this._socket.connect();
+	}
 
 	ngOnInit() {
 		// Get and Set Timer Screensaver
@@ -33,7 +37,6 @@ export class UnactivatedComponent implements OnInit {
 		this.socket_launchReset();
 
 		this.socket_launchUpdate();
-	
 	}
 
 	ngOnDestroy(){
@@ -48,7 +51,9 @@ export class UnactivatedComponent implements OnInit {
 	}
 
 	reloadPlayer() {
-		this._router.navigate(['/setup/getting-ready'])
+		this._router.navigate(['/setup/getting-ready']).then(() => {
+			window.location.reload();
+		})
 	}
 
 	resetPlayer() {
@@ -63,7 +68,7 @@ export class UnactivatedComponent implements OnInit {
 	}
 
 	socket_launchReset() {
-		this._socket.on('launch_reset', (data) => {
+		this._socket.on('LSS_launch_reset', (data) => {
 			console.log('Launch Reset', data);
 			if (data === this.license_id) {
 				this._router.navigate(['/setup/reset-pi']);
@@ -72,11 +77,10 @@ export class UnactivatedComponent implements OnInit {
 	}
 
 	socket_launchUpdate() {
-		this._socket.on('launch_update', (data) => {
-			console.log('Launch Update', data);
-			if (data === this.license_id) {
-				this._router.navigate(['/setup/getting-ready']);
-			}
+		this._socket.on('LSS_launch_update', (data) => {
+			this._router.navigate(['/setup/getting-ready']).then(() => {
+				window.location.reload();
+			});
 		})
 	}
 

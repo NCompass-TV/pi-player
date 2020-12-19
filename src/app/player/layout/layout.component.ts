@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
 import { Router } from '@angular/router';
 import { PlayerService } from '../../services/player.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
 	selector: 'app-layout',
@@ -25,15 +26,24 @@ export class LayoutComponent implements OnInit {
 		private _player: PlayerService,
 		private _socket: Socket,
 		private _router: Router,
-	) { }
+	) { 
+		this._socket.ioSocket.io.uri = environment.pi_socket;
+		this._socket.connect();
+	}
 
 	ngOnInit() {
 		this.connectToSocket();
 		this.getLicenseIdKey();
 		this.playerDisplayInfo();
 		this.triggerReset();
+		this.triggerRefetch();
 		this.triggerScreenshot();
 		this.triggerUpdatePlayer();
+	}
+
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
+		this._socket.disconnect();
 	}
 
 	connectToSocket() {
@@ -75,7 +85,6 @@ export class LayoutComponent implements OnInit {
 
 	triggerUpdatePlayer() {
 		this._socket.on('LSS_launch_update', (data) => {
-			console.log('Launch Update', data);
 			this._router.navigate(['/setup/getting-ready'], { queryParams: { update_player: true } });
 		})
 	}
@@ -83,7 +92,14 @@ export class LayoutComponent implements OnInit {
 	triggerReset() {
 		this._socket.on('LSS_launch_reset', (data) => {
 			console.log('Launch Reset', data);
-			this._router.navigate(['/setup/reset-pi']);
+			this._router.navigate(['/setup/reset-pi'], { queryParams: { reset: true } });
+		})
+	}
+
+	triggerRefetch() {
+		this._socket.on('LSS_launch_refetch', (data) => {
+			console.log('Launch Refetch', data);
+			this._router.navigate(['/setup/reset-pi'], { queryParams: { refetch: true } });
 		})
 	}
 
@@ -100,9 +116,5 @@ export class LayoutComponent implements OnInit {
 				)
 			}
 		})
-	}
-
-	ngOnDestroy() {
-		this.subscription.unsubscribe();
 	}
 }

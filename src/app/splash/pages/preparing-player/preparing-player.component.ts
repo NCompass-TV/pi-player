@@ -3,19 +3,22 @@ import { Socket } from 'ngx-socket-io';
 import { Subscription } from 'rxjs';
 import { PlayerService } from '../../../services/player.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { environment } from '../../../../environments/environment';
+import { SocketServer } from '../../../services/socket.service';
 
 @Component({
-  selector: 'app-preparing-player',
-  templateUrl: './preparing-player.component.html',
-  styleUrls: ['./preparing-player.component.scss']
+	selector: 'app-preparing-player',
+	templateUrl: './preparing-player.component.html',
+	styleUrls: ['./preparing-player.component.scss']
 })
+
 export class PreparingPlayerComponent implements OnInit {
 
 	license_id: string = localStorage.getItem('license_id');
 	license_key: string = localStorage.getItem('license_key');
 
 	setup_message = [
-		"Welcome! Thank you for choosing us",
+		"Welcome to N-Compass TV",
 		"We're setting up things for you",
 		"Leave everything to us",
 		"Grab yourself some popcorn",
@@ -34,23 +37,44 @@ export class PreparingPlayerComponent implements OnInit {
 	message_count = 0;
 	is_update: boolean = false;
 	is_reset: boolean = false;
+	is_online: boolean = true;
+	counter: number = 10;
 
 	constructor(
 		private _player_service: PlayerService,
 		private _params: ActivatedRoute,
 		private _router: Router,
-		private _socket: Socket
-	) { }
+		private _socket: Socket,
+		private _socket_server: SocketServer
+	) { 
+		this._socket.ioSocket.io.uri = environment.pi_socket;
+		
+		this._socket.connect();
+		this._socket.on('connect', data => {
+			console.log('Connected To Local Socket')
+		})
+
+		this._socket_server.connect();
+		this._socket_server.on('connect', data => {
+			this.is_online = true;
+			this.licenseExists();
+			console.log('Connected To Socket Server');
+		})
+
+
+		this._socket_server.on('connect_error', error => {
+			// On Init Connection Error
+			console.log('Connection Error');
+			this.redirectOffline();
+		})
+	}
 
 	ngOnInit() {
-		// Pi Player: Check if License already exist in Pi Player
-		this.licenseExists();
-
 		// If attempting an update on player content
 		this.updatePlayer();
 
 		// Setup Message Array is displayed
-		this.setupMessage(7000);
+		this.setupMessage(8000);
 
 		// Socket Connection to get current download progress
 		this.socket_contentToDownload();
@@ -59,24 +83,40 @@ export class PreparingPlayerComponent implements OnInit {
 		this.socket_downloadedContent();
 	}
 
-
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
 	}
 
+	redirectOffline() {
+		this.is_online = false;
+
+		console.log('Attempting to Connect', this.counter--);
+
+		if (this.counter == 0) {
+			this._socket.emit('PP_update_finish');
+			this._router.navigate(['/player']).then(() => {
+				// HOTFIX: Reload page destination to Destroy previous socket sessions
+				window.location.reload();
+				console.log('Redirected to Player')
+			});
+		}
+	}
+
 	licenseExists() {
+		console.log('Checking License');
 		this.subscription.add(
 			this._player_service.get_license_from_db().subscribe(
-				(data: any[]) => {
-					console.log(data);
-					if (data.length != 0) {
-						data.forEach(l => {
-							if (l.license_key) {
-								// Update
-								console.log('APPLYING UPDATE');
-								this.clearDatabase(true, l.license_id, l.license_key);
+				(data: any) => {
+					if (data.length > 0) {
+						// Update
+						setTimeout(() => {
+							if (this.is_online) {
+								this.clearDatabase(true, data[0].license_id, data[0].license_key);
+							} else {
+								this.redirectOffline();
 							}
-						});
+						}, 3000);
+
 					} else {
 						this.clearDatabase(false, this.license_id, this.license_key)
 					}
@@ -249,11 +289,12 @@ export class PreparingPlayerComponent implements OnInit {
 		if(this.content_count === this.download_counter) {
 			console.log('Player Data is saved and Contents are downloaded, will now redirect to player in few seconds');
 			this.download_success = true;
-			this.setupMessage(12000);
+			this.setupMessage(11000);
 			setTimeout(() => {
 				this._socket.emit('PP_update_finish');
 				this._router.navigate(['/player']).then(() => {
 					// HOTFIX: Reload page destination to Destroy previous socket sessions
+					window.location.reload();
 					console.log('Redirected to Player')
 				});
 			}, 10000)

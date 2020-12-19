@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Injectable } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { SPLASH_ROUTES } from './splash.routes';
@@ -23,14 +23,12 @@ import { ResetPiComponent } from './pages/reset-pi/reset-pi.component';
 		LoaderComponent,
 		ResetPiComponent
 	],
-
 	imports: [
 		CommonModule,
 		FormsModule,
-        ReactiveFormsModule,
+		ReactiveFormsModule,
 		RouterModule.forChild(SPLASH_ROUTES),
 	],
-
 	exports: [
 		LayoutComponent,
 		RegisterLicenseComponent,
