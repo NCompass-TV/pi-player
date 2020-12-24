@@ -4,9 +4,7 @@ import { Subscription } from 'rxjs';
 import { PlayerService } from '../../../services/player.service';
 import { Socket } from 'ngx-socket-io';
 import { environment } from '../../../../environments/environment';
-
-import { Observable, fromEvent, merge, of } from 'rxjs';
-import { mapTo } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
 	selector: 'app-register-license',
@@ -16,9 +14,11 @@ import { mapTo } from 'rxjs/operators';
 
 export class RegisterLicenseComponent implements OnInit {
 
-	online$: Observable<boolean>;
-	subscription: Subscription = new Subscription;
+	error: string;
 	is_connected: boolean;
+	online$: Observable<boolean>;
+	reload_countdown: number = 15;
+	subscription: Subscription = new Subscription;
 
 	constructor(
 		private _player_service: PlayerService,
@@ -53,6 +53,22 @@ export class RegisterLicenseComponent implements OnInit {
 		this._socket.disconnect();
 	}
 
+	reloadTimer() {
+		setTimeout(() => {
+			if (this.reload_countdown > 0) {
+				this.reload_countdown -= 1;
+				this.reloadTimer();
+			}
+		}, 1000)
+	}
+
+	piServerErrorReload() {
+		setTimeout(() => {
+			console.log('Reloading');
+			location.reload();
+		}, 15000)
+	}
+
 	getLicenseFromDB() {
 		this.subscription.add(
 			this._player_service.get_license_from_db().subscribe(
@@ -69,6 +85,12 @@ export class RegisterLicenseComponent implements OnInit {
 						console.log('No License Detected. Is Player Online:',  this.is_connected);
 						return false;
 					}
+				}, 
+				error => {
+					console.log('#getLicenseFromDB', error);
+					this.error = error.message;
+					this.reloadTimer();
+					this.piServerErrorReload();
 				}
 			)
 		)
