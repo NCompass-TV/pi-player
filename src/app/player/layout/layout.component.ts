@@ -29,6 +29,11 @@ export class LayoutComponent implements OnInit {
 	) { 
 		this._socket.ioSocket.io.uri = environment.pi_socket;
 		this._socket.connect();
+
+		this._socket.on('connect_error', error => {
+			// On Init Connection Error
+			console.log('Error in Pi Server')
+		})
 	}
 
 	ngOnInit() {

@@ -9,6 +9,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PlayerService } from './services/player.service';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { environment } from '../environments/environment';
+import { AlertComponent } from './shared/components/alert/alert.component';
 const config: SocketIoConfig = { url: environment.pi_socket, options: { autoConnect: false } };
 
 @NgModule({

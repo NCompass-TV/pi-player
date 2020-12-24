@@ -11,6 +11,7 @@ import { PreparingPlayerComponent } from './pages/preparing-player/preparing-pla
 import { UnactivatedComponent } from './pages/unactivated/unactivated.component';
 import { LoaderComponent } from './components/loader/loader.component';
 import { ResetPiComponent } from './pages/reset-pi/reset-pi.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
 	declarations: [
@@ -27,6 +28,7 @@ import { ResetPiComponent } from './pages/reset-pi/reset-pi.component';
 		CommonModule,
 		FormsModule,
 		ReactiveFormsModule,
+		SharedModule,
 		RouterModule.forChild(SPLASH_ROUTES),
 	],
 	exports: [

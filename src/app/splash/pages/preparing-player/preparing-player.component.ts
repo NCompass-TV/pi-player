@@ -34,11 +34,16 @@ export class PreparingPlayerComponent implements OnInit {
 	content_count: number = 0;
 	download_counter: number = 0;
 	download_status: number = 0;
+	error_exist: boolean = false;
+	error_title: string;
+	error_description: string;
+	reload_countdown: number = 7;
 	message_count = 0;
 	is_update: boolean = false;
 	is_reset: boolean = false;
 	is_online: boolean = true;
 	counter: number = 10;
+	server_ok: boolean;
 
 	constructor(
 		private _player_service: PlayerService,
@@ -50,17 +55,46 @@ export class PreparingPlayerComponent implements OnInit {
 		this._socket.ioSocket.io.uri = environment.pi_socket;
 		
 		this._socket.connect();
+
 		this._socket.on('connect', data => {
-			console.log('Connected To Local Socket')
+			console.log('Connected To Local Socket');
+			if (this.error_exist) {
+				this.alertError('Socket is Ready', 'The Pi Server is now available, retrying download.')
+				this.reload_countdown = 8;
+				this.server_ok = true;
+				this.error_exist = false;
+
+				let interval = setInterval(() => {
+					if (this.reload_countdown > 0) {
+						this.reload_countdown -= 1;
+					} else {
+						location.reload();
+						clearInterval(interval);
+					}
+				}, 1000)
+			}
 		})
 
+		this._socket.on('connect_error', error => {
+			console.log('There is a problem with the Pi Server');
+			this.alertError('Pi Server Error', 'Something went wrong with the Pi Server causing the download to stop.')
+			this.reload_countdown -= 1;
+			this.server_ok = false;
+			this.error_exist = true;
+
+			if(this.reload_countdown == 0) {
+				location.reload();
+			}
+		})
+
+		// Socket Server
 		this._socket_server.connect();
+
 		this._socket_server.on('connect', data => {
 			this.is_online = true;
 			this.licenseExists();
 			console.log('Connected To Socket Server');
 		})
-
 
 		this._socket_server.on('connect_error', error => {
 			// On Init Connection Error
@@ -85,6 +119,14 @@ export class PreparingPlayerComponent implements OnInit {
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
+		this._socket.disconnect();
+		this._socket_server.disconnect();
+	}
+
+	alertError(title, desc) {
+		this.error_exist = true;
+		this.error_title = title;
+		this.error_description = desc;
 	}
 
 	redirectOffline() {

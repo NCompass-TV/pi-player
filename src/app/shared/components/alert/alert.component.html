@@ -1,0 +1,23 @@
+<div class="warning" [ngClass]="error ? 'show' : null">
+    <div class="d-flex">
+        <div>
+            <h4 class="md-text">{{ alert_title }}</h4>
+        </div>
+        <div class="flex-even">
+            <p class="sm-text text-right">Retry in: {{ retry_count }}</p>
+        </div>
+    </div>
+    <p class="sm-text">{{ alert_desc }}</p>
+</div>
+
+<div class="success" [ngClass]="server_status ? 'show' : null">
+    <div class="d-flex">
+        <div>
+            <h4 class="md-text">{{ alert_title }}</h4>
+        </div>
+        <div class="flex-even">
+            <p class="sm-text text-right">Retry in: {{ retry_count }}</p>
+        </div>
+    </div>
+    <p class="sm-text">{{ alert_desc }}</p>
+</div>

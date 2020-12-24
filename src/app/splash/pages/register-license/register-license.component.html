@@ -1,14 +1,9 @@
 <ng-container>
     <app-license-form></app-license-form>
-    <div class="warning" [ngClass]="error ? 'show' : null">
-        <div class="d-flex">
-            <div>
-                <h4 class="md-text">Pi Server Error</h4>
-            </div>
-            <div class="flex-even">
-                <p class="sm-text text-right">Retry in: {{ reload_countdown }}</p>
-            </div>
-        </div>
-        <p class="sm-text">{{ error }}</p>
-    </div>
+    <app-alert
+    [error]="error_exist"
+    [alert_title]="error_title"
+    [alert_desc]="error_description"
+    [retry_count]="reload_countdown">
+    </app-alert>
 </ng-container>
