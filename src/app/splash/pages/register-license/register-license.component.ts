@@ -109,7 +109,9 @@ export class RegisterLicenseComponent implements OnInit {
 					if(data.length != 0) {
 						if (this.is_connected) {
 							console.log('License detected and player is online');
-							this._router.navigate(['/setup/getting-ready']);
+							this._router.navigate(['/setup/getting-ready']).then(() => {
+								window.location.reload();
+							});
 						} else {
 							console.log('License detected but internet has failed, Redirecting to player');
 							this._router.navigate(['/player']);
