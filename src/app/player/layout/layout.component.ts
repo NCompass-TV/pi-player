@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable, fromEvent } from 'rxjs';
 import { Subscription } from 'rxjs';
 import { Socket } from 'ngx-socket-io';
+import { SocketServer } from '../../services/socket.service';
 import { Router } from '@angular/router';
 import { PlayerService } from '../../services/player.service';
 import { environment } from '../../../environments/environment';
@@ -13,14 +14,19 @@ import { environment } from '../../../environments/environment';
 })
 
 export class LayoutComponent implements OnInit {
-	licenseKey: string;
+
 	contentData: any;
-	mouseXPos: number;
-	showInfo: boolean = false;
-	license_id: string;
 	counter: number = 1;
+	error_description: string;
+	error_exist: boolean = false;
+	error_title: string;
+	is_closed: boolean = false;
+	licenseKey: string;
+	license_id: string;
+	mouseXPos: number;
+	reload_countdown: number = 7;
+	showInfo: boolean = false;
 	subscription: Subscription = new Subscription;
-	is_closed: boolean = true;
 
 	constructor(
 		private _player: PlayerService,
@@ -28,10 +34,28 @@ export class LayoutComponent implements OnInit {
 		private _router: Router,
 	) { 
 		this._socket.ioSocket.io.uri = environment.pi_socket;
+
 		this._socket.connect();
 
-		this._socket.on('connect_error', error => {
-			// On Init Connection Error
+		this._socket.on('connect', () => {
+			console.log('Connected to Local Socket')
+
+			if (this.error_exist) {
+				this.error_exist = false;
+				this.reload_countdown = 7;
+				location.reload();
+			}
+		})
+
+		this._socket.on('connect_error', () => {
+			this.alertError('Pi Server Error', 'Something went wrong with the Pi Server, will retry in a few')
+
+			this.reload_countdown -= 1; 
+
+			if(this.reload_countdown == 0) {
+				location.reload();
+			}
+
 			console.log('Error in Pi Server')
 		})
 	}
@@ -51,14 +75,25 @@ export class LayoutComponent implements OnInit {
 		this._socket.disconnect();
 	}
 
+	alertError(title, desc) {
+		this.error_exist = true;
+		this.error_title = title;
+		this.error_description = desc;
+	}
+
 	connectToSocket() {
 		this._socket.emit('electron_is_running');
 		
-		this._socket.on('PS_operation_closed', data => {
+		this._socket.on('PS_operation_closed', () => {
 			this.is_closed = true;
 		})
 
-		this._socket.on('PS_operation_open', data => {
+		this._socket.on('PS_operation_open', () => {
+			this.is_closed = false;
+		})
+
+		this._socket.on('PS_operation_error', () => {
+			console.log('There is an error with the hostinfo');
 			this.is_closed = false;
 		})
 	}
@@ -69,7 +104,7 @@ export class LayoutComponent implements OnInit {
 		fromEvent(document.body, 'mousemove').subscribe((e: MouseEvent) => {
 			if (e.pageX == 0) {
 				this.showInfo = true;
-			} 
+			}
 		});
 	}
 

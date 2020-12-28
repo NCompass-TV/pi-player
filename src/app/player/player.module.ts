@@ -10,6 +10,7 @@ import { IsImagePipe } from '../pipes/is-image.pipe';
 import { IsVideoPipe } from '../pipes/is-video.pipe';
 import { IsFeedPipe } from '../pipes/is-feed.pipe';
 import { SanitizePipe } from '../pipes/sanitize.pipe';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
 	declarations: [
@@ -25,6 +26,7 @@ import { SanitizePipe } from '../pipes/sanitize.pipe';
 
 	imports: [
 		CommonModule,
+		SharedModule,
 		RouterModule.forChild(PLAYER_ROUTES)
 	],
 
