@@ -244,6 +244,9 @@ export class PreparingPlayerComponent implements OnInit {
 				error => {
 					// Must add redirection to Fatal Error Page...
 					console.log('#PreparingPlayerComponent - getPlayerContent() - Fatal Error: ', error);
+					setTimeout(() => {
+						window.location.reload();
+					}, 5000)
 				}
 			)
 		)
@@ -261,6 +264,9 @@ export class PreparingPlayerComponent implements OnInit {
 				error => {
 					// Must add redirection to Fatal Error Page...
 					console.log('#PreparingPlayerComponent - savePlayerContent() - Fatal Error: ', error);
+					setTimeout(() => {
+						window.location.reload();
+					}, 5000)
 				}
 			)
 		)
@@ -278,6 +284,9 @@ export class PreparingPlayerComponent implements OnInit {
 				error => {
 					// Must add redirection to Fatal Error Page...
 					console.log('#PreparingPlayerComponent - downloadPlayerAssets() - Fatal Error: ', error);
+					setTimeout(() => {
+						window.location.reload();
+					}, 5000)
 				}
 			)
 		)
