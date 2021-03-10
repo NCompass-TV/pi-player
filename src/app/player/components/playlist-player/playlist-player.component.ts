@@ -102,7 +102,7 @@ export class PlaylistPlayerComponent implements OnInit {
 			}
 		}
 
-		this.sendLogsOverSocket(this.player_playlist_content[i].content_id);
+		// this.sendLogsOverSocket(this.player_playlist_content[i].content_id);
 	}
 
 	// Display Feed Content
@@ -110,7 +110,7 @@ export class PlaylistPlayerComponent implements OnInit {
 		this.player_current_content = url;
 		this.playlist_content_type = type;
 
-		this.sendLogsOverSocket(this.player_playlist_content[i].content_id);
+		// this.sendLogsOverSocket(this.player_playlist_content[i].content_id);
 
 		let slide_duration = duration > 0 ? duration : 20000;
 
@@ -128,7 +128,7 @@ export class PlaylistPlayerComponent implements OnInit {
 	displayImage(fileurl, filetype, duration, i) {
 		this.player_current_content = fileurl;
 		this.playlist_content_type = filetype
-		this.sendLogsOverSocket(this.player_playlist_content[i].content_id);
+		// this.sendLogsOverSocket(this.player_playlist_content[i].content_id);
 
 		let slide_duration = duration > 0 ? duration : 20000;
 
@@ -163,37 +163,37 @@ export class PlaylistPlayerComponent implements OnInit {
 	}
 
 	// Send Logs via HTTPS
-	saveLogToDatabase(content) {
-		const date = this._date.transform(new Date(), 'y-MM-d H:mm:ss');
-		let content_play_count: ContentLogData = new ContentLogData(
-			this.license_id,
-			content,
-			date
-		)
+	// saveLogToDatabase(content) {
+	// 	const date = this._date.transform(new Date(), 'y-MM-d H:mm:ss');
+	// 	let content_play_count: ContentLogData = new ContentLogData(
+	// 		this.license_id,
+	// 		content,
+	// 		date
+	// 	)
 
-		this.subscription.add(
-			this._player.save_content_play_count(content_play_count).subscribe(
-				data => {
-					return null;
-				},
-				error => {
-					console.log('sendLogsOverSocket', error)
-				}
-			)
-		)
-	}
+	// 	this.subscription.add(
+	// 		this._player.save_content_play_count(content_play_count).subscribe(
+	// 			data => {
+	// 				return null;
+	// 			},
+	// 			error => {
+	// 				console.log('sendLogsOverSocket', error)
+	// 			}
+	// 		)
+	// 	)
+	// }
 
 	// Send Logs via Socket
-	sendLogsOverSocket(content) {
-		const date = this._date.transform(new Date(), 'y-MM-d H:mm:ss');
-		let content_play_count: ContentLogData = new ContentLogData(
-			this.license_id,
-			content,
-			date
-		)
+	// sendLogsOverSocket(content) {
+	// 	const date = this._date.transform(new Date(), 'y-MM-d H:mm:ss');
+	// 	let content_play_count: ContentLogData = new ContentLogData(
+	// 		this.license_id,
+	// 		content,
+	// 		date
+	// 	)
 
-		this._socket.emit('PP_logs', content_play_count);
-	}
+	// 	this._socket.emit('PP_logs', content_play_count);
+	// }
 
 	// On Video Ended Event
 	onVideoEnded() {
