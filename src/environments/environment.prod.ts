@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
   // DotNet Server
-  server_url: 'http://n-compass.online:82/api/',
+  server_url: 'https://nctvapi.n-compass.online/api/',
   piDownloader: 'pidownloader/getcontents?licensekey=',
   registerLicense: 'license/register',
   
@@ -25,6 +25,6 @@ export const environment = {
 
   // Misc
   pi_socket: 'http://localhost:3215',
-  socket_server: 'http://3.212.225.229:93',
+  socket_server: 'https://nctvsocket.n-compass.online',
   kafka_topic: 'content-count'
 };
