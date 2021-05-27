@@ -90,12 +90,13 @@ export class LicenseFormComponent implements OnInit {
 	mapPiSystemnInfo(pi) {
 		return new PiInfo (
 			this.f.license.value,
-			pi.macaddress,
+			pi.macAddress,
 			pi.memory,
-			pi.internettype,
-			pi.internetspeed,
+			pi.internetType,
+			pi.internetSpeed,
 			pi.storage.total,
-			`${100 - pi.storage.used} %`
+			`${100 - pi.storage.used} %`,
+			JSON.stringify(pi.appVersion)
 		)
 	}
 

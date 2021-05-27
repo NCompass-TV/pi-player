@@ -1,4 +1,5 @@
 export class PiInfo {
+    appVersion: string;
     licensekey: string;
     macaddress: string;
     memory: string;
@@ -10,7 +11,7 @@ export class PiInfo {
     constructor(
         key: string, mac: string, memory: string,
         net_type: string, net_speed: string, total_storage: string,
-        free_storage: string
+        free_storage: string, appVersion: string,
     ) {
         this.licensekey = key;
         this.macaddress = mac;
@@ -19,5 +20,6 @@ export class PiInfo {
         this.internetspeed = net_speed;
         this.totalstorage = total_storage;
         this.freestorage = free_storage;
+        this.appVersion = appVersion;
     }
 }
