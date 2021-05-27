@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -14,6 +14,7 @@ import { License } from '../../../models/license.model';
 
 export class LicenseFormComponent implements OnInit {
 
+	@Input() license_key: string;
 	internal_server: boolean = false;
 	is_disabled: boolean = true;
 	is_submitted: boolean = false;
@@ -37,6 +38,8 @@ export class LicenseFormComponent implements OnInit {
 				license: ['', Validators.required]
 			}
 		)
+
+		this.f.license.setValue(this.license_key)
 
 		this.subscription.add(
 			this.register_license_form.valueChanges.subscribe(

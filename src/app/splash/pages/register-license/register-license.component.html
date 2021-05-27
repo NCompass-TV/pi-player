@@ -1,3 +1,23 @@
 <ng-container>
-    <app-license-form></app-license-form>
+    <app-license-form *ngIf="!checking_license; else checking">
+    </app-license-form>
+
+    <ng-template #checking>
+        <div class="container vh-100 d-flex justify-content-center align-items-center">
+            <div class="w-100 text-center position-relative">
+                <img src="assets/n-compass.png" class="logo" alt="ncompass">
+                <div class="form text-center w-100">
+                    <h1>
+                        Checking Player License, Please Wait ...
+                    </h1>
+                </div>
+                
+                <ng-container *ngIf="is_submitted">
+                    <div class="overlay d-flex align-items-center justify-content-center">
+                        <app-loader></app-loader>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </ng-template>
 </ng-container>
